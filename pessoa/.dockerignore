@@ -1,0 +1,13 @@
+# Ignorar o módulo do Go e arquivos binários locais
+bin/
+# pkg/
+vendor/
+
+# Ignorar arquivos e diretórios de configuração de editor
+*.md
+*.log
+*.swp
+*.tmp
+*.old
+.git/
+.gitignore

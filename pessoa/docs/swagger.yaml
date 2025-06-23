@@ -1,0 +1,617 @@
+basePath: /
+definitions:
+  api.Error:
+    properties:
+      message:
+        type: string
+    type: object
+host: localhost:8081
+info:
+  contact:
+    email: atendimento@fdqf.com.br
+    name: Gustavo P Gialluisi
+    url: http://www.fdqf.com
+  description: Microserviço modelo para cadastro de pessoas
+  license:
+    name: FDQF License
+    url: http://license.fdqf.com.br
+  termsOfService: http://swagger.io/terms/
+  title: FDQF - Microserviço de Pessoas
+  version: 0.0.1
+paths:
+  /emails:
+    post:
+      consumes:
+      - application/json
+      description: Insert an email
+      parameters:
+      - description: email ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save an email
+      tags:
+      - emails
+  /emails/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an email by ID
+      parameters:
+      - description: email ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete an email pelo ID
+      tags:
+      - emails
+    get:
+      consumes:
+      - application/json
+      description: Get an email by ID
+      parameters:
+      - description: email ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get an email pelo ID
+      tags:
+      - emails
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update an email
+      parameters:
+      - description: email ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save an email
+      tags:
+      - emails
+  /enderecos:
+    post:
+      consumes:
+      - application/json
+      description: Insert or Update a endereco
+      parameters:
+      - description: endereco ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a endereco
+      tags:
+      - enderecos
+  /enderecos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a endereco by ID
+      parameters:
+      - description: endereco ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a endereco pelo ID
+      tags:
+      - enderecos
+    get:
+      consumes:
+      - application/json
+      description: Get a endereco by ID
+      parameters:
+      - description: endereco ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a endereco pelo ID
+      tags:
+      - enderecos
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a endereco
+      parameters:
+      - description: endereco ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a endereco
+      tags:
+      - enderecos
+  /pessoas:
+    get:
+      consumes:
+      - application/json
+      description: Find all pessoas
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find all pessoas
+      tags:
+      - pessoas
+    post:
+      consumes:
+      - application/json
+      description: Insert or Update a pessoa
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a pessoa
+      tags:
+      - pessoas
+  /pessoas/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a pessoa by ID
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a pessoa pelo ID
+      tags:
+      - pessoas
+    get:
+      consumes:
+      - application/json
+      description: Get a pessoa by ID
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a pessoa pelo ID
+      tags:
+      - pessoas
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a pessoa
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a pessoa
+      tags:
+      - pessoas
+  /pessoas/{parent}/emails:
+    get:
+      consumes:
+      - application/json
+      description: Get emails da pessoa by ID
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get emails da pessoa pelo ID
+      tags:
+      - emails
+  /pessoas/{parent}/enderecos:
+    get:
+      consumes:
+      - application/json
+      description: Get enderecos da pessoa by ID
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get enderecos da pessoa pelo ID
+      tags:
+      - enderecos
+  /pessoas/{parent}/telefones:
+    get:
+      consumes:
+      - application/json
+      description: Get telefones da pessoa by ID
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get telefones da pessoa pelo ID
+      tags:
+      - telefones
+  /pessoas/v1:
+    post:
+      consumes:
+      - application/json
+      description: Insert a pessoa given name and email
+      parameters:
+      - description: pessoa ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a pessoa given name and email
+      tags:
+      - pessoas new-name-email
+  /telefones:
+    post:
+      consumes:
+      - application/json
+      description: Insert a telefone
+      parameters:
+      - description: telefone ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a telefone
+      tags:
+      - telefones
+  /telefones/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a telefone by ID
+      parameters:
+      - description: telefone ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a telefone pelo ID
+      tags:
+      - telefones
+    get:
+      consumes:
+      - application/json
+      description: Get a telefone by ID
+      parameters:
+      - description: telefone ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a telefone pelo ID
+      tags:
+      - telefones
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a telefone
+      parameters:
+      - description: telefone ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a telefone
+      tags:
+      - telefones
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      parameters:
+      - description: user request
+        in: body
+        name: request
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.Error'
+      summary: Create user
+      tags:
+      - users
+  /users/generate_token:
+    post:
+      consumes:
+      - application/json
+      description: Get a user JWT
+      parameters:
+      - description: user credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a user JWT
+      tags:
+      - users
+swagger: "2.0"

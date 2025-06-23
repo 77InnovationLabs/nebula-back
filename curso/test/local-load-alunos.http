@@ -1,0 +1,176 @@
+
+### INCLUSÃO DE CURSO
+POST http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "Ethereum Developer Pack",
+    "descricao": "Educamos de manera presencial y gratuita, con instructores de primer nivel en toda Latinoamérica junto a aliados claves como universidades y comunidades locales. El Ethereum Developer Pack es un grupo de cursos para aprender a desarrollar en el ecosistema de Ethereum. Son cinco módulos donde enseñamos desde lo más básico de blockchain hasta seguridad de Smart Contracts."
+}
+
+### INCLUSÃO DE ALUNOCURSO
+POST http://localhost:8083/alunocursos HTTP/1.1
+Content-Type: application/json
+
+{
+  "aluno_id":"f767cd63-1630-4422-9f90-83817da89aa6",
+  "curso_id":"0d15de9b-75ce-4b63-b1af-18d89209f34c"
+}
+
+### GET ALUNOS
+GET http://localhost:8083/alunos HTTP/1.1
+Content-Type: application/json
+
+
+
+### INCLUSÃO DE ALUNO
+POST http://localhost:8083/alunos HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "0a0b6f52-12fe-4c6a-9b1c-6cfbfe59b8ca",
+    "nome": "Juan Pérez",
+    "wallet": "0x2ee5e013268D4Fc0DDAD4b4FbbF1f1250b80GUBA"
+}
+
+### EDICAO DE ALUNO
+PUT http://localhost:8083/alunos/8233578c-35ac-40b5-9bd6-f34ed8bbb49e HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "0a0b6f52-12fe-4c6a-9b1c-6cfbfe59b8ca",
+    "data_inicio": "2025-06-08T00:00:05Z",
+    "xp_total": 0, 
+    "nft_id": "0xNft",
+    "status_aluno": "ATIVO", 
+    "nome": "Juan Pérez",
+    "wallet": "0xCDdA743f59D355c335328703BF248c302d02C2FC"
+}
+
+
+
+
+### DELETE ALUNOS
+DELETE http://localhost:8083/alunos/c5e91618-78d7-4da3-a4b3-b4bfc356cc86 HTTP/1.1
+Content-Type: application/json
+
+
+
+
+### GET ALUNO BY WALLET
+GET http://localhost:8083/alunos/by-wallet/0x2ee5e013268D4Fc0DDAD4b4FbbF1f1250b80GUBA HTTP/1.1
+Content-Type: application/json
+
+
+
+
+### INCLUSÃO DE MODULOS
+POST http://localhost:8083/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "0d15de9b-75ce-4b63-b1af-18d89209f34c",
+    "nome": "Módulo 1: Intro a Smart Contracts",
+    "descricao": "Objetivo: Revisar los conceptos básicos de blockchain y Ethereum para entender la máquina descentralizada sobre la corren los smart contracts. Crear el primer smart contract en una testnet. Contenido: Blockchain/Wallets/Ethereum 101/Blockchain Explorer/Remix/Crea tu primer smart contract"
+}
+
+
+### INCLUSÃO DE MODULOS
+POST http://localhost:8083/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "0d15de9b-75ce-4b63-b1af-18d89209f34c",
+    "nome": "Módulo 2: Fundamentos de Solidity",
+    "descricao": "Objetivo: Aprender el principal lenguaje para programar smart contracts: Solidity."
+}
+
+
+### INCLUSÃO DE MODULOS
+POST http://localhost:8083/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "0d15de9b-75ce-4b63-b1af-18d89209f34c",
+    "nome": "Módulo 3: Estándares, Librerías y Patrones",
+    "descricao": "Objetivo: Profundizar en estándares como ERC 20, ERC-721 y otros. Conocer las principales librerías y buenas prácticas de diseño."
+}
+
+
+### INCLUSÃO DE MODULOS
+POST http://localhost:8083/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "0d15de9b-75ce-4b63-b1af-18d89209f34c",
+    "nome": "Módulo 4: Toolkit para desarrollo Web3",
+    "descricao": "Objetivo:  Conectar el frontend a la blockchain, utilizando las principales herramientas del mercado para desarrollar en Web3."
+}
+
+
+### INCLUSÃO DE MODULOS
+POST http://localhost:8083/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "0d15de9b-75ce-4b63-b1af-18d89209f34c",
+    "nome": "Módulo 5: Seguridad, Pruebas y Auditoría",
+    "descricao": "Objetivo: Conocer metodologías para realizar pruebas, así como las principales vulnerabilidades en los smart contracts. Adicionalmente, aprender a prepararse para aprobar una auditoría de smart contracts."
+}
+
+
+
+
+### INLCUSAO DE ITEM 1 EM MODULO 1
+GET http://localhost:8083/modulos/6655c9f0-c947-44d8-99de-a83deae202bc/itens HTTP/1.1
+Content-Type: application/json
+
+
+
+### INLCUSAO DE ITEM 1 EM MODULO 1
+POST http://localhost:8083/modulos/6655c9f0-c947-44d8-99de-a83deae202bc/itens HTTP/1.1
+Content-Type: application/json
+
+{
+  "modulo_id": "6655c9f0-c947-44d8-99de-a83deae202bc",
+  "nome": "Fundamentos de Blockchain",
+  "descricao": "Resumo do Conteúdo do módulo 1",
+  "estimativa_tempo_minutos": 5,
+  "tipo": "aula",
+  "aula": {
+    "texto": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Fundamentos de Blockchain</title>\n</head>\n<body>\n    <h1>Fundamentos de Blockchain</h1>\n    <h2>Temario</h2>\n    <p>En esta sección aprenderás los siguiente:</p>\n    <ul>\n        <li>Antecedentes</li>\n        <li>Bitcoin</li>\n        <li>Qué es Blockchain</li>\n        <li>Conceptos Clave en Blockchain</li>\n        <li>Cómo funciona la Blockchain</li>\n        <li>Tipos de Blockchain</li>\n        <li>Modelos de Consenso</li>\n    </ul>\n</body>\n</html>"
+  }
+}
+
+
+
+### INLCUSAO DE ITEM 2 EM MODULO 1
+POST http://localhost:8083/modulos/6655c9f0-c947-44d8-99de-a83deae202bc/itens HTTP/1.1
+Content-Type: application/json
+
+{
+  "modulo_id": "6655c9f0-c947-44d8-99de-a83deae202bc",
+  "nome": "Antecedentes de Blockchain",
+  "descricao": "Aula sobre antecedentes da blockchain",
+  "estimativa_tempo_minutos": 60,
+  "tipo": "aula",
+  "aula": {
+    "texto": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>Antecedentes de Blockchain</title>\n</head>\n<body>\n\n<p>\n    La historia de la blockchain es la de una tecnología que ha evolucionado y se ha utilizado en una variedad de aplicaciones más allá de las criptomonedas. Aunque el \n    <a href=\"#\">whitepaper de Bitcoin</a>, publicado en 2008 por una persona o grupo de personas bajo el seudónimo de Satoshi Nakamoto, se considera el origen de la tecnología blockchain, en realidad es el resultado de la combinación de varias tecnologías previas, como la criptografía de clave pública y la teoría de juegos.\n</p>\n\n<p>\n    Antes de la blockchain, se hicieron intentos para crear monedas digitales, pero sin éxito.\n</p>\n\n<p>\n    A continuación algunas de las tecnologías que posibilitaron el surgimiento del concepto de blockchain:\n</p>\n\n<ul>\n    <li>\n        <strong>1979 - Merkle Tree:</strong> Ralph Merkle propuso una estructura de datos criptográfica llamada \"Merkle Tree\" o \"Árbol de Merkle\", que permite la verificación eficiente de grandes cantidades de datos. El árbol de Merkle divide los datos en bloques y los organiza en una estructura de árbol, donde cada bloque está vinculado a su bloque padre a través de una función de hash criptográfico.\n    </li>\n    <li>\n        <strong>1989 - DigiCash:</strong> El sistema de DigiCash utilizaba una moneda digital llamada \"eCash\" que se podía comprar en un banco y luego usar para hacer pagos en línea. \n        <a href=\"#\">Aunque DigiCash no tuvo éxito comercialmente</a>, se considera una de las primeras empresas en desarrollar una criptomoneda y sentó las bases para el desarrollo posterior de la tecnología blockchain y las criptomonedas como Bitcoin.\n    </li>\n    <li>\n        <strong>1992 - Control de modificación de documentos digitales:</strong> Haber y Stornetta propusieron la marca temporal de documentos digitales en \n        <em>merkle trees</em>. Publicaron \n        <a href=\"#\">papers</a> proponiendo un sistema para asegurar que los bloques no sean modificables y puedan ser encadenados criptográficamente.\n    </li>\n    <li>\n        <strong>1997 - Hashcash:</strong> \n        <a href=\"#\">Una tecnología de prueba de trabajo</a> que utiliza una función hash criptográfica para crear un token que prueba que se ha realizado un cierto esfuerzo computacional. Utilizado principalmente para combatir el spam en el correo electrónico.\n    </li>\n    <li>\n        <strong>1998 - B-Money y Bit Gold:</strong> Fueron dos propuestas de criptomonedas previas a Bitcoin, con enfoques en la privacidad y la distribución justa (\n        <a href=\"#\">B-Money</a>) y en la criptografía y como moneda de respaldo (oro digital) de otras criptomonedas (\n        <a href=\"#\">Bit Gold</a>). Wei Dai, creador de B-Money propuso que cada nodo participante en la red guarde una copia completa del registro de transacciones realizadas. Por otro lado, fue el famoso Nick Szabo quien estuvo detrás de la creación de Bit Gold.\n    </li>\n</ul>\n\n</body>\n</html>"
+  }
+}
+
+
+### INLCUSAO DE ITEM 3 EM MODULO 1
+POST http://localhost:8083/modulos/6655c9f0-c947-44d8-99de-a83deae202bc/itens HTTP/1.1
+Content-Type: application/json
+
+{
+  "modulo_id": "6655c9f0-c947-44d8-99de-a83deae202bc",
+  "nome": "Cómo funciona la Blockchain",
+  "descricao": "Aula sobre funcionamento da blockchain",
+  "estimativa_tempo_minutos": 60,
+  "tipo": "aula",
+  "aula": {
+    "texto": "<!DOCTYPE html><html lang=\"es\"><head><meta charset=\"UTF-8\"><title>Cómo funciona la Blockchain</title></head><body><h1>Cómo funciona la Blockchain</h1><p>Para entender cómo funciona una blockchain utilizaremos como ejemplo la primera: Bitcoin. La explicaremos de forma simplificada pero mostrando los principales elementos de la blockchain.</p><p>Partamos del hecho de que existe una red distribuida de tipo P2P de computadoras (nodos).</p><p>El concepto de red P2P es clave para entender cómo funciona una blockchain. Esta red está permanentemente activa y se encarga de hacer funcionar el sistema de Bitcoin, para ello todos los nodos corren un mismo programa que contiene las reglas de funcionamiento de la blockchain.</p><p>Empecemos:</p><ol><li>Iris quiere enviar un bitcoin a Pepe. Para ello Iris inicia una transferencia desde su billetera digital hacia la dirección bitcoin de Pepe. La transacción registra los datos de dirección de origen, dirección de destino, importe de la transferencia y la comisión si está dispuesta a pagarla.</li><li>La transacción se difunde desde los nodos más cercanos hacia toda la red P2P. Esto ocurre también en simultáneo con otras transacciones que realizan otros usuarios de la red.</li><li>Las transacciones se van acumulando en una mempool, que es un fichero en el que los nodos almacenan las transacciones que aún no han sido incorporadas en la blockchain y que por tanto están pendientes de validación.</li><li>Los nodos mineros (computadoras), que almacenan la blockchain completa, compiten en la creación de un nuevo bloque. Para ello conforman su bloque candidato tomando transacciones de la mempool (en promedio unas mil), añadiendo una cabecera, que entre otros datos contiene: el número de bloque (o altura de bloque), el hash del último bloque creado, la hora de creación, un resumen de las transacciones incluidas y un número dummy denominado nonce que le servirá para participar en la prueba de trabajo a realizar.</li><li>Con su bloque candidato conformado, cada nodo minero participa en una competencia denominada prueba de trabajo, que requiere consumo a tope de su capacidad de procesamiento, generando hashes utilizando una función como SHA-256. La competencia demora en promedio 10 minutos hasta que un nodo minero obtiene un hash correcto. El nodo minero que obtuvo la solución transmite a todos los nodos de la red su bloque ganador para su verificación.</li></ol></body></html>"
+  }
+}

@@ -1,0 +1,39 @@
+
+### GET ALL PESSOAS
+GET http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+
+### GET THE PESSOA
+GET http://localhost:8081/pessoas/b255e7e5-7d79-413e-9003-cb075250c3dd HTTP/1.1
+Content-Type: application/json
+
+
+### INCLUSÃO DE EMAIL
+POST http://localhost:8081/emails HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "b255e7e5-7d79-413e-9003-cb075250c3dd",
+    "endereco": "to-del@example.com",
+    "principal": false
+}
+
+### ALTERAÇÃO DE EMAIL
+PUT http://localhost:8081/emails/76afe00d-5ae3-4ee8-bfbc-fb201aa591da HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "b255e7e5-7d79-413e-9003-cb075250c3dd",
+    "endereco": "alterou2@example.com",
+    "principal": false
+}
+
+### GET Emails da pessoa
+GET http://localhost:8081/pessoas/b255e7e5-7d79-413e-9003-cb075250c3dd/emails HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE um Email
+DELETE http://localhost:8081/emails/b14671cb-d584-46ac-8c91-4596cc98dff9 HTTP/1.1
+Content-Type: application/json

@@ -1,0 +1,58 @@
+
+### INCLUSÃO DE CURSO
+POST http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "CURSO 2",
+    "descricao": "Essa é a descrição do CURSO 2"
+}
+
+### GET CURSOS
+GET http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+
+
+### GET CURSOS
+GET http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+
+
+
+
+### INCLUSÃO DE CURSO
+POST http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "f7203e34-14d9-4955-a0b5-87889068cfd9",
+    "tipo_atuacao": "MODULO",
+    "data_contrato": "2023-12-25T00:00:00Z"
+}
+
+### GET ALL!
+GET http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+
+### ALTERA CURSO
+PUT http://localhost:8083/cursos/de198c51-6f1c-4c95-9104-b682826d1530 HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "a8d28a6e-5795-48d1-b0fd-b89f4d11fae3",
+    "tipo_atuacao": "GESTAO",
+    "data_contrato": "2024-01-12T00:00:00Z"
+}
+
+
+### GET ONE
+GET http://localhost:8083/cursos/de198c51-6f1c-4c95-9104-b682826d1530 HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE
+DELETE http://localhost:8083/cursos/f7203e34-14d9-4955-a0b5-87889068cfd9 HTTP/1.1
+Content-Type: application/json

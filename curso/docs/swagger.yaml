@@ -1,0 +1,1049 @@
+basePath: /
+definitions:
+  api.Error:
+    properties:
+      message:
+        type: string
+    type: object
+  dto.AlunoCursoItemModuloUpdateDTO:
+    properties:
+      blockchain_rede_validacao:
+        type: string
+      blockchain_tx_envio:
+        type: string
+      endereco_contrato_validar:
+        type: string
+      progresso:
+        type: number
+      status:
+        $ref: '#/definitions/entity.TipoStatusItemModulo'
+      status_validacao_contrato:
+        $ref: '#/definitions/entity.TipoStatusValidacaoContrato'
+      tempo_assistido:
+        type: integer
+    type: object
+  dto.ItemModuloAulaDTO:
+    properties:
+      texto:
+        type: string
+    type: object
+  dto.ItemModuloContractValidationDTO:
+    properties:
+      endereco_contrato:
+        type: string
+      rede:
+        type: string
+    type: object
+  dto.ItemModuloInputDTO:
+    properties:
+      aula:
+        $ref: '#/definitions/dto.ItemModuloAulaDTO'
+      contract_validation:
+        $ref: '#/definitions/dto.ItemModuloContractValidationDTO'
+      descricao:
+        type: string
+      estimativa_tempo_minutos:
+        type: integer
+      modulo_id:
+        type: string
+      nome:
+        type: string
+      tipo:
+        type: string
+    type: object
+  dto.ItemModuloOutputDTO:
+    properties:
+      aula:
+        $ref: '#/definitions/dto.ItemModuloAulaDTO'
+      contract_validation:
+        $ref: '#/definitions/dto.ItemModuloContractValidationDTO'
+      created_at:
+        type: string
+      descricao:
+        type: string
+      estimativa_tempo_minutos:
+        type: integer
+      id:
+        type: string
+      modulo_id:
+        type: string
+      nome:
+        type: string
+      ordem:
+        type: integer
+      tipo:
+        type: string
+      updated_at:
+        type: string
+    type: object
+  entity.TipoStatusItemModulo:
+    enum:
+    - não iniciado
+    - em andamento
+    - concluído
+    type: string
+    x-enum-varnames:
+    - TipoStatusItemModuloNaoIniciado
+    - TipoStatusItemModuloEmAndamento
+    - TipoStatusItemModuloConcluido
+  entity.TipoStatusValidacaoContrato:
+    enum:
+    - validação contrato pendente
+    - validação contrato concluída
+    - validação contrato erro
+    type: string
+    x-enum-varnames:
+    - TipoStatusValidacaoContratoPendente
+    - TipoStatusValidacaoContratoConcluido
+    - TipoStatusValidacaoContratoErro
+host: localhost:8082
+info:
+  contact:
+    email: atendimento@fdqf.com.br
+    name: Gustavo P Gialluisi
+    url: http://www.fdqf.com
+  description: Microserviço modelo para cadastro de cursos
+  license:
+    name: FDQF License
+    url: http://license.fdqf.com.br
+  termsOfService: http://swagger.io/terms/
+  title: FDQF - Microserviço de Cursos
+  version: 0.0.1
+paths:
+  /alunocursoitemmodulos/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get AlunoCursoItemModulo by ID
+      parameters:
+      - description: AlunoCursoItemModulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Busca um único item de módulo de uma matrícula
+      tags:
+      - alunocursoitemmodulos
+    patch:
+      consumes:
+      - application/json
+      description: Update AlunoCursoItemModulo by ID
+      parameters:
+      - description: AlunoCursoItemModulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Campos para atualização
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.AlunoCursoItemModuloUpdateDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Atualiza progresso, status ou campos específicos do item de módulo
+      tags:
+      - alunocursoitemmodulos
+  /alunocursos:
+    get:
+      consumes:
+      - application/json
+      description: Find all alunoCursos
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find all alunoCursos
+      tags:
+      - alunocursos
+    post:
+      consumes:
+      - application/json
+      description: Insert or Update a alunoCurso
+      parameters:
+      - description: alunoCurso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a alunoCurso
+      tags:
+      - alunocursos
+  /alunocursos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a alunoCurso by ID
+      parameters:
+      - description: alunoCurso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a alunoCurso pelo ID
+      tags:
+      - alunocursos
+    get:
+      consumes:
+      - application/json
+      description: Get a alunoCurso by ID
+      parameters:
+      - description: alunoCurso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a alunoCurso pelo ID
+      tags:
+      - alunocursos
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a alunoCurso
+      parameters:
+      - description: alunoCurso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a alunoCurso
+      tags:
+      - alunocursos
+  /alunocursos/{id}/itemmodulos:
+    get:
+      consumes:
+      - application/json
+      description: Get all AlunoCursoItemModulo by AlunoCurso ID
+      parameters:
+      - description: AlunoCurso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Lista todos os itens de módulo de uma matrícula
+      tags:
+      - alunocursoitemmodulos
+  /alunos:
+    get:
+      consumes:
+      - application/json
+      description: Find all alunos
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find all alunos
+      tags:
+      - alunos
+    post:
+      consumes:
+      - application/json
+      description: Insert an Aluno
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a aluno
+      tags:
+      - alunos
+  /alunos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a aluno by ID
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a aluno pelo ID
+      tags:
+      - alunos
+    get:
+      consumes:
+      - application/json
+      description: Get a aluno by ID
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a aluno pelo ID
+      tags:
+      - alunos
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a aluno
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a aluno
+      tags:
+      - alunos
+  /alunos/{parent}/cursos:
+    get:
+      consumes:
+      - application/json
+      description: Get cursos do aluno by ID
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get cursos do aluno pelo ID
+      tags:
+      - alunocursos
+  /alunos/by-wallet/{id}:
+    get:
+      consumes:
+      - application/json
+      description: Get a aluno by wallet address
+      parameters:
+      - description: aluno ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a aluno pela sua wallet
+      tags:
+      - alunos
+  /cursos:
+    get:
+      consumes:
+      - application/json
+      description: Find all cursos
+      parameters:
+      - description: page number
+        in: query
+        name: page
+        type: string
+      - description: limit
+        in: query
+        name: limit
+        type: string
+      - description: sort
+        in: query
+        name: sort
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Find all cursos
+      tags:
+      - cursos
+    post:
+      consumes:
+      - application/json
+      description: Insert or Update a curso
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a curso
+      tags:
+      - cursos
+  /cursos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a curso by ID
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a curso pelo ID
+      tags:
+      - cursos
+    get:
+      consumes:
+      - application/json
+      description: Get a curso by ID
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a curso pelo ID
+      tags:
+      - cursos
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a curso
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a curso
+      tags:
+      - cursos
+  /cursos/{parent}/alunos:
+    get:
+      consumes:
+      - application/json
+      description: Get alunos do curso by ID
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get alunos do curso pelo ID
+      tags:
+      - alunocursos
+  /cursos/{parent}/modulos:
+    get:
+      consumes:
+      - application/json
+      description: Get modulos da curso by ID
+      parameters:
+      - description: curso ID
+        format: uuid
+        in: path
+        name: parent
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get modulos da curso pelo ID
+      tags:
+      - modulos
+  /itens/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete an item modulo by ID
+      parameters:
+      - description: ItemModulo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete item modulo
+      tags:
+      - itemmodulo
+    get:
+      consumes:
+      - application/json
+      description: Retrieve an item modulo by its ID
+      parameters:
+      - description: ItemModulo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ItemModuloOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+      summary: Get item modulo by ID
+      tags:
+      - itemmodulo
+    put:
+      consumes:
+      - application/json
+      description: Update an item from a modulo
+      parameters:
+      - description: ItemModulo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Updated item
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ItemModuloInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ItemModuloOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Update item modulo
+      tags:
+      - itemmodulo
+  /itens/{id}/mover:
+    post:
+      consumes:
+      - application/json
+      description: Change the order of an item modulo
+      parameters:
+      - description: ItemModulo ID
+        in: path
+        name: id
+        required: true
+        type: string
+      - description: Action (cima|baixo|inicio|fim)
+        in: query
+        name: action
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Move item modulo
+      tags:
+      - itemmodulo
+  /modulos:
+    post:
+      consumes:
+      - application/json
+      description: Insert a modulo
+      parameters:
+      - description: modulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a modulo
+      tags:
+      - modulos
+  /modulos/{id}:
+    delete:
+      consumes:
+      - application/json
+      description: Delete a modulo by ID
+      parameters:
+      - description: modulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Delete a modulo pelo ID
+      tags:
+      - modulos
+    get:
+      consumes:
+      - application/json
+      description: Get a modulo by ID
+      parameters:
+      - description: modulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a modulo pelo ID
+      tags:
+      - modulos
+    put:
+      consumes:
+      - application/json
+      description: Insert or Update a modulo
+      parameters:
+      - description: modulo ID
+        format: uuid
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Save a modulo
+      tags:
+      - modulos
+  /modulos/{modulo_id}/itens:
+    get:
+      consumes:
+      - application/json
+      description: Retrieve all items from a given modulo
+      parameters:
+      - description: Modulo ID
+        in: path
+        name: modulo_id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.ItemModuloOutputDTO'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get all items from a modulo
+      tags:
+      - itemmodulo
+    post:
+      consumes:
+      - application/json
+      description: Create an item in a modulo
+      parameters:
+      - description: ItemModulo input
+        in: body
+        name: input
+        required: true
+        schema:
+          $ref: '#/definitions/dto.ItemModuloInputDTO'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.ItemModuloOutputDTO'
+        "400":
+          description: Bad Request
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Create item modulo
+      tags:
+      - itemmodulo
+  /pessoas:
+    get:
+      consumes:
+      - application/json
+      description: Get pessoas
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get pessoas
+      tags:
+      - pessoas
+  /users:
+    post:
+      consumes:
+      - application/json
+      description: Create user
+      parameters:
+      - description: user request
+        in: body
+        name: request
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/api.Error'
+      summary: Create user
+      tags:
+      - users
+  /users/generate_token:
+    post:
+      consumes:
+      - application/json
+      description: Get a user JWT
+      parameters:
+      - description: user credentials
+        in: body
+        name: request
+        required: true
+        schema:
+          type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            type: string
+        "404":
+          description: Not Found
+          schema:
+            type: string
+        "500":
+          description: Internal Server Error
+          schema:
+            type: string
+      summary: Get a user JWT
+      tags:
+      - users
+swagger: "2.0"

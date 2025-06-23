@@ -1,0 +1,54 @@
+
+### GET ALL PESSOAS
+GET http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+
+
+### INCLUSÃO DE ENDEREÇO
+POST http://localhost:8081/enderecos HTTP/1.1
+Content-Type: application/json
+
+{
+    "logradouro": "Rua Ossian",
+    "numero": "656",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "04666777",
+    "pessoa_id": "b255e7e5-7d79-413e-9003-cb075250c3dd"
+}
+
+
+### ALTERAÇÃO DE ENDEREÇO
+PUT http://localhost:8081/enderecos/62c5d184-494d-437c-bb84-2b43a20b52d5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "02b61b3a-97ae-4948-8b12-f468cad9eb9b",
+    "logradouro": "Rua dos Bobos",
+    "numero": "700",
+    "cep": "01001222",
+    "bairro": "Centro",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "principal": true,
+    "sem_numero": false
+}
+
+
+### GET Enderecos da pessoa
+GET http://localhost:8081/pessoas/02b61b3a-97ae-4948-8b12-f468cad9eb9b/enderecos HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE um Endereco
+DELETE http://localhost:8081/enderecos/66968d29-ae2e-4834-9b05-b702179b226b HTTP/1.1
+Content-Type: application/json
+
+
+### GET um Endereco
+GET http://localhost:8081/enderecos/b51ab85f-3a60-4f35-bd50-50a7c2f22baa HTTP/1.1
+Content-Type: application/json
+
+

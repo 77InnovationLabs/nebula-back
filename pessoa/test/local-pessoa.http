@@ -1,0 +1,109 @@
+
+### INCLUSÃO DE PESSOA FÍSICA
+POST http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+{
+    "tipo": "FISICA",
+    "nome": "João Aluno da Silva",
+    "documento": "0406794123"
+}
+
+### INCLUSÃO DE PESSOA COM NOME E EMAIL
+POST http://localhost:8081/pessoas/v1 HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "Teste NOme EMail",
+    "email": "nome@email.com",
+}
+
+
+### INCLUSÃO DE PESSOA FÍSICA COMPLETA
+POST http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+{
+    "tipo": "FISICA",
+    "nome": "Vamo Pessoa COmpleta",
+    "documento": "45265632684",
+    "enderecos": [
+        {
+            "logradouro": "Rua dos Bobos",
+            "numero": "0",
+            "bairro": "Centro",
+            "cidade": "São Paulo",
+            "estado": "SP",
+            "cep": "01001000"
+        },
+        {
+            "logradouro": "Rua Alvaro Alvim",
+            "numero": "78",
+            "bairro": "Jardim Paulista",
+            "cidade": "São Paulo",
+            "estado": "SP",
+            "cep": "84845454"
+        }
+    ],
+    "telefones": [
+        {
+            "ddd": "11",
+            "numero": "55628454",
+            "principal": true
+        },
+        {
+            "ddd": "11",
+            "numero": "888888888",
+            "principal": false
+        }
+    ],
+    "emails": [
+        {
+            "endereco": "hjhkjh@kjhkjh.com",
+            "principal": true
+        },
+        {
+            "endereco": "kjhgjhfghfdfdfdg@mmnc.com",
+            "principal": false
+        }
+    ]
+}
+
+### GET ALL!
+GET http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+
+### ALTERA PESSOA
+PUT http://localhost:8081/pessoas/0a0b6f52-12fe-4c6a-9b1c-6cfbfe59b8ca HTTP/1.1
+Content-Type: application/json
+
+{
+    "tipo": "FISICA",
+    "nome": "João Aluno da Silva",
+    "documento": "0406794123"
+}
+
+
+
+### Inclui ou altera uma pessoa física
+POST http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+{
+    "id": "3cd6a2d4-c249-4f66-a84f-9e3dd2c0d0b7",
+    "tipo": "FISICA",
+    "nome": "vamooooo",
+    "documento": "885466554589"
+}
+
+
+### GET ONE
+GET http://localhost:8081/pessoas/02b61b3a-97ae-4948-8b12-f468cad9eb9b HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE
+DELETE http://localhost:8081/pessoas/3cd6a2d4-c249-4f66-a84f-9e3dd2c0d0b7 HTTP/1.1
+Content-Type: application/json
+

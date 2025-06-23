@@ -1,0 +1,141 @@
+version: '3.8'
+
+services:
+
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    ports:
+      - "2181:2181"
+    env_file:
+      - ./pessoa/.env
+    volumes:
+      - zookeeper_data:/var/lib/zookeeper
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "2181"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    ports:
+      - "9092:9092"
+    env_file:
+      - ./pessoa/.env
+    depends_on:
+      zookeeper:
+        condition: service_healthy
+    volumes:
+      - kafka_data:/var/lib/kafka
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "bash",
+          "-c",
+          "kafka-broker-api-versions --bootstrap-server localhost:9092",
+        ]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+
+  webkafka:
+    image: provectuslabs/kafka-ui:latest
+    ports:
+      - 9030:8080
+    env_file:
+      - ./pessoa/.env
+    depends_on:
+      kafka:
+        condition: service_healthy
+
+  mail:
+    image: mailhog/mailhog:v1.0.1
+    ports:
+      - 8025:8025
+      
+  db-pessoa:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_PESSOA_USER}
+      POSTGRES_PASSWORD: ${DB_PESSOA_PASSWORD}
+      POSTGRES_DB: ${DB_PESSOA_NAME}
+    ports:
+      - "5432:5432"
+    volumes:
+      - pessoa_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_PESSOA_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  pessoa-service:
+    build:
+      context: ./pessoa
+    environment:
+      - PESSOA_SERVICE_PORT=${PESSOA_SERVICE_PORT}
+      - DB_PESSOA_USER=${DB_PESSOA_USER}
+      - DB_PESSOA_PASSWORD=${DB_PESSOA_PASSWORD}
+      - DB_PESSOA_NAME=${DB_PESSOA_NAME}
+      - DB_PESSOA_HOST=${DB_PESSOA_HOST}
+      - DB_PESSOA_PORT=${DB_PESSOA_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRESIN=${JWT_EXPIRESIN}
+      - KAFKA_BROKERS=${KAFKA_BROKERS}
+    ports:
+      - "8081:8081"
+    depends_on:
+      db-pessoa:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./pessoa:/app  # Volume para o código-fonte
+
+
+  db-curso:
+    image: postgres:15-alpine
+    environment:
+      POSTGRES_USER: ${DB_CURSO_USER}
+      POSTGRES_PASSWORD: ${DB_CURSO_PASSWORD}
+      POSTGRES_DB: ${DB_CURSO_NAME}
+    ports:
+      - "5434:5432"
+    volumes:
+      - curso_db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_CURSO_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  curso-service:
+    build:
+      context: ./curso
+    environment:
+      - FRONTEND_URL=${FRONTEND_URL}
+      - CURSO_SERVICE_PORT=${CURSO_SERVICE_PORT}
+      - DB_CURSO_USER=${DB_CURSO_USER}
+      - DB_CURSO_PASSWORD=${DB_CURSO_PASSWORD}
+      - DB_CURSO_NAME=${DB_CURSO_NAME}
+      - DB_CURSO_HOST=${DB_CURSO_HOST}
+      - DB_CURSO_PORT=${DB_CURSO_PORT}
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_EXPIRESIN=${JWT_EXPIRESIN}
+      - KAFKA_BROKERS=${KAFKA_BROKERS}
+    ports:
+      - "8083:8083"
+    depends_on:
+      db-curso:
+        condition: service_healthy
+      kafka:
+        condition: service_healthy
+    volumes:
+      - ./curso:/app  # Volume para o código-fonte
+
+volumes:
+  curso_db_data:
+  pessoa_db_data:
+  zookeeper_data:
+  kafka_data:

@@ -1,0 +1,49 @@
+
+### GET ALL PESSOAS
+GET http://localhost:8081/pessoas HTTP/1.1
+Content-Type: application/json
+
+
+### GET THE PESSOA
+GET http://localhost:8081/pessoas/b255e7e5-7d79-413e-9003-cb075250c3dd HTTP/1.1
+Content-Type: application/json
+
+
+
+### INCLUSÃO DE TELEFONE
+POST http://localhost:8081/telefones HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "b255e7e5-7d79-413e-9003-cb075250c3dd",
+    "numero": "000",
+    "ddd": "11",
+    "principal": false
+}
+
+### ALTERAÇÃO DE TELEFONE
+PUT http://localhost:8081/telefones/1bbd521f-cae6-4001-9674-a4096c5793f5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "pessoa_id": "b255e7e5-7d79-413e-9003-cb075250c3dd",
+    "numero": "911111111",
+    "ddd": "11",
+    "principal": true
+}
+
+
+### GET TELEFONE
+GET http://localhost:8081/telefones/1bbd521f-cae6-4001-9674-a4096c5793f5 HTTP/1.1
+Content-Type: application/json
+
+
+
+### GET Telefones da pessoa
+GET http://localhost:8081/pessoas/b255e7e5-7d79-413e-9003-cb075250c3dd/telefones HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE um Telefone
+DELETE http://localhost:8081/telefones/79325031-369f-475f-a566-8e980a0bd543 HTTP/1.1
+Content-Type: application/json

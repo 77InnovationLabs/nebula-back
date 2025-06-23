@@ -1,0 +1,37 @@
+
+### INCLUSÃO DE CURSO
+POST http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+{
+    "nome": "Ethereum Developer Pack",
+    "descricao": "Educamos de manera presencial y gratuita, con instructores de primer nivel en toda Latinoamérica junto a aliados claves como universidades y comunidades locales. El Ethereum Developer Pack es un grupo de cursos para aprender a desarrollar en el ecosistema de Ethereum. Son cinco módulos donde enseñamos desde lo más básico de blockchain hasta seguridad de Smart Contracts."
+}
+
+### GET ALUNOS
+GET http://localhost:8083/alunos HTTP/1.1
+Content-Type: application/json
+
+### GET CURSOS
+GET http://localhost:8083/cursos HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE MATRICULA
+DELETE http://localhost:8083/alunocursos/7d1da491-f667-497f-9994-47bcb0eff96d HTTP/1.1
+Content-Type: application/json
+
+
+### GET ITEMMODULOs do ALUNOCURSO
+GET http://localhost:8083/alunocursos/67be2a53-5f00-46c9-89b5-a297ebe97b33/itemmodulos HTTP/1.1
+Content-Type: application/json
+
+### PATCH ITEMMODULO do ALUNOCURSO
+PATCH http://localhost:8083/alunocursoitemmodulos/758e3356-1619-4543-ba0b-07d1114c7e02 HTTP/1.1
+Content-Type: application/json  
+
+{
+    "status": "completo",
+    "progresso": 100,
+    "tempo_assistido": 600
+}

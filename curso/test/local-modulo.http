@@ -1,0 +1,55 @@
+
+### GET ALL CURSOS
+GET http://localhost:8082/cursos HTTP/1.1
+Content-Type: application/json
+
+
+### GET THE CURSO
+GET http://localhost:8082/cursos/de198c51-6f1c-4c95-9104-b682826d1530 HTTP/1.1
+Content-Type: application/json
+
+
+
+### INCLUSÃO DE MODULO
+POST http://localhost:8082/modulos HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "de198c51-6f1c-4c95-9104-b682826d1530",
+    "data_inicio": "2023-12-25T00:00:00Z",
+    "saldo_caixinha": 0,
+    "logradouro": "Av Paulista",
+    "numero": "901",
+    "bairro": "Bela Vista",
+    "cidade": "São Paulo",
+    "estado": "SP",
+    "cep": "01001777",
+    "sem_numero": false
+}
+
+### ALTERAÇÃO DE MODULO
+PUT http://localhost:8082/modulos/1bbd521f-cae6-4001-9674-a4096c5793f5 HTTP/1.1
+Content-Type: application/json
+
+{
+    "curso_id": "b255e7e5-7d79-413e-9003-cb075250c3dd",
+    "numero": "911111111",
+    "ddd": "11",
+    "principal": true
+}
+
+
+### GET MODULO
+GET http://localhost:8082/modulos/340b8e70-a87a-4f57-8d86-596aed97fac3 HTTP/1.1
+Content-Type: application/json
+
+
+
+### GET Modulos da curso
+GET http://localhost:8082/cursos/de198c51-6f1c-4c95-9104-b682826d1530/modulos HTTP/1.1
+Content-Type: application/json
+
+
+### DELETE um Modulo
+DELETE http://localhost:8082/modulos/79325031-369f-475f-a566-8e980a0bd543 HTTP/1.1
+Content-Type: application/json

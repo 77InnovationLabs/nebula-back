@@ -1,0 +1,4 @@
+# Ignora variáveis de ambiente
+.env
+.env.prod
+

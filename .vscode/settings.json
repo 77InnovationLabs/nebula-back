@@ -1,0 +1,24 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "pessoa_db",
+            "database": "pessoa_db",
+            "username": "meu_usuario_pessoa",
+            "password": "minha_senha_pessoa"
+        },
+        {
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5434,
+            "driver": "PostgreSQL",
+            "name": "curso_db",
+            "database": "curso_db",
+            "username": "meu_usuario_curso",
+            "password": "minha_senha_curso"
+        }
+    ]
+}
