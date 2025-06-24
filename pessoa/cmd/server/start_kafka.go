@@ -35,25 +35,28 @@ func startKafka(brokers string) error {
 	}
 	defer admin.Close()
 
-	topics := []string{
-		"pessoa.saved",
-		"pessoa.deleted",
-	}
+	if os.Getenv("ENV") == "LOCAL" {
 
-	for _, topic := range topics {
-		err := admin.CreateTopic(topic, &sarama.TopicDetail{
-			NumPartitions:     1,
-			ReplicationFactor: 3,
-		}, false)
+		topics := []string{
+			"pessoa.saved",
+			"pessoa.deleted",
+		}
 
-		if err != nil {
-			if err.(sarama.KError) == sarama.ErrTopicAlreadyExists {
-				log.Printf("🔍 Tópico '%s' já existe.", topic)
+		for _, topic := range topics {
+			err := admin.CreateTopic(topic, &sarama.TopicDetail{
+				NumPartitions:     1,
+				ReplicationFactor: 3,
+			}, false)
+
+			if err != nil {
+				if err.(sarama.KError) == sarama.ErrTopicAlreadyExists {
+					log.Printf("🔍 Tópico '%s' já existe.", topic)
+				} else {
+					return fmt.Errorf("❌ Erro ao criar tópico '%s': %v", topic, err)
+				}
 			} else {
-				return fmt.Errorf("❌ Erro ao criar tópico '%s': %v", topic, err)
+				log.Printf("✅ Tópico '%s' criado com sucesso!", topic)
 			}
-		} else {
-			log.Printf("✅ Tópico '%s' criado com sucesso!", topic)
 		}
 	}
 

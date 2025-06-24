@@ -56,9 +56,13 @@ func main() {
 	kafkaBrokers := os.Getenv("KAFKA_BROKERS")
 	kafkaBrokersList := strings.Split(kafkaBrokers, ",")
 
-	// ✅ Inicializa Kafka (create topics)
-	if err := ensureKafkaTopics(kafkaBrokersList); err != nil {
-		log.Fatalf("Erro Kafka: %v", err)
+	// ✅ Inicializa Kafka (create topics) - apenas se LOCAL...
+	if os.Getenv("ENV") == "LOCAL" {
+		if err := ensureKafkaTopics(kafkaBrokersList); err != nil {
+			log.Fatalf("Erro Kafka: %v", err)
+		}
+	} else {
+		log.Println("🔑 Skip Kafka topic creation: production mode")
 	}
 
 	// ✅ PostgreSQL
