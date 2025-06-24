@@ -6,9 +6,9 @@ import (
 	"fmt"
 	"sync"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/dto"
-	msg_kafka "github.com/ggialluisi/fdqf-ms/curso/internal/infra/messaging/kafka"
-	event_pkg "github.com/ggialluisi/fdqf-ms/curso/pkg/event_dispatcher"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/dto"
+	msg_kafka "github.com/77InnovationLabs/nebula-back/curso/internal/infra/messaging/kafka"
+	event_pkg "github.com/77InnovationLabs/nebula-back/curso/pkg/event_dispatcher"
 )
 
 type CursoChangedKafkaHandler struct {

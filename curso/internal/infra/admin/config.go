@@ -3,7 +3,7 @@ package admin
 import (
 	"net/http"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/entity"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
 
 	"github.com/qor5/admin/presets"
 	"github.com/qor5/admin/presets/gorm2op"

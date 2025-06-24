@@ -159,3 +159,17 @@ rename-entity:
 
 logs:
 	docker-compose logs -f --tail 200 ${ARGS}
+
+# Nome dos apps Heroku
+PESSOA_APP=pessoa-service-app
+CURSO_APP=curso-service-app
+
+# Alvo para conectar no banco PESSOA
+psql-pessoa:
+	@echo "Abrindo psql para $(PESSOA_APP)..."
+	heroku config:get DATABASE_URL --app $(PESSOA_APP) | xargs psql
+
+# Alvo para conectar no banco CURSO
+psql-curso:
+	@echo "Abrindo psql para $(CURSO_APP)..."
+	heroku config:get DATABASE_URL --app $(CURSO_APP) | xargs psql

@@ -3,7 +3,7 @@ package event
 import (
 	"time"
 
-	events_pkg "github.com/ggialluisi/fdqf-ms/pessoa/pkg/event_dispatcher"
+	events_pkg "github.com/77InnovationLabs/nebula-back/pessoa/pkg/event_dispatcher"
 )
 
 type PessoaChanged struct {

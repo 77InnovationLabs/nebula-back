@@ -3,7 +3,7 @@ package event
 import (
 	"time"
 
-	events_pkg "github.com/ggialluisi/fdqf-ms/curso/pkg/event_dispatcher"
+	events_pkg "github.com/77InnovationLabs/nebula-back/curso/pkg/event_dispatcher"
 )
 
 type ItemModuloChanged struct {

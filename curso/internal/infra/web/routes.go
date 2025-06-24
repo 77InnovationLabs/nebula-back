@@ -10,7 +10,7 @@ import (
 	"github.com/go-chi/jwtauth"
 	httpSwagger "github.com/swaggo/http-swagger"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/infra/api"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/infra/api"
 )
 
 // SetupRoutes configura todas as rotas da aplicação.

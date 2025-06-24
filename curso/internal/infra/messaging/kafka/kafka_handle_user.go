@@ -3,9 +3,9 @@ package kafka
 import (
 	"encoding/json"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/dto"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/repository"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/usecase"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/dto"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/repository"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/usecase"
 	"github.com/segmentio/kafka-go"
 )
 

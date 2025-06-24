@@ -1,4 +1,4 @@
-module github.com/ggialluisi/fdqf-ms/pessoa
+module github.com/77InnovationLabs/nebula-back/pessoa
 
 go 1.22.5
 

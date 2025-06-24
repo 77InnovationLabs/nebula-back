@@ -11,18 +11,18 @@ import (
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/entity"
-	domain_event "github.com/ggialluisi/fdqf-ms/curso/internal/domain/event"
-	event_handler "github.com/ggialluisi/fdqf-ms/curso/internal/domain/event/handler"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/infra/admin"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/infra/api"
-	database "github.com/ggialluisi/fdqf-ms/curso/internal/infra/database/gorm"
-	msg_kafka "github.com/ggialluisi/fdqf-ms/curso/internal/infra/messaging/kafka"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/infra/web"
-	events_pkg "github.com/ggialluisi/fdqf-ms/curso/pkg/event_dispatcher"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
+	domain_event "github.com/77InnovationLabs/nebula-back/curso/internal/domain/event"
+	event_handler "github.com/77InnovationLabs/nebula-back/curso/internal/domain/event/handler"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/infra/admin"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/infra/api"
+	database "github.com/77InnovationLabs/nebula-back/curso/internal/infra/database/gorm"
+	msg_kafka "github.com/77InnovationLabs/nebula-back/curso/internal/infra/messaging/kafka"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/infra/web"
+	events_pkg "github.com/77InnovationLabs/nebula-back/curso/pkg/event_dispatcher"
 	"github.com/segmentio/kafka-go"
 
-	_ "github.com/ggialluisi/fdqf-ms/curso/docs"
+	_ "github.com/77InnovationLabs/nebula-back/curso/docs"
 
 	"github.com/go-chi/jwtauth"
 )

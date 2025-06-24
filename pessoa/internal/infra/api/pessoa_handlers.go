@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/ggialluisi/fdqf-ms/pessoa/internal/domain/dto"
-	"github.com/ggialluisi/fdqf-ms/pessoa/internal/domain/repository"
-	"github.com/ggialluisi/fdqf-ms/pessoa/internal/domain/usecase"
-	"github.com/ggialluisi/fdqf-ms/pessoa/pkg/event_dispatcher"
+	"github.com/77InnovationLabs/nebula-back/pessoa/internal/domain/dto"
+	"github.com/77InnovationLabs/nebula-back/pessoa/internal/domain/repository"
+	"github.com/77InnovationLabs/nebula-back/pessoa/internal/domain/usecase"
+	"github.com/77InnovationLabs/nebula-back/pessoa/pkg/event_dispatcher"
 	"github.com/google/uuid"
 )
 

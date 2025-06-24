@@ -1,7 +1,7 @@
 package repository
 
 import (
-	"github.com/ggialluisi/fdqf-ms/pessoa/internal/domain/entity"
+	"github.com/77InnovationLabs/nebula-back/pessoa/internal/domain/entity"
 	"github.com/google/uuid"
 )
 

@@ -6,7 +6,7 @@ import (
 	"log"
 	"sync"
 
-	event_pkg "github.com/ggialluisi/fdqf-ms/pessoa/pkg/event_dispatcher"
+	event_pkg "github.com/77InnovationLabs/nebula-back/pessoa/pkg/event_dispatcher"
 )
 
 type PessoaChangedLogOnlyHandler struct {

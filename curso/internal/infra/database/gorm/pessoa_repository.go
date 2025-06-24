@@ -1,8 +1,8 @@
 package gorm
 
 import (
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/entity"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/repository"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/repository"
 	"github.com/google/uuid"
 	"gorm.io/gorm"
 )

@@ -1,4 +1,4 @@
-module github.com/ggialluisi/fdqf-ms/curso
+module github.com/77InnovationLabs/nebula-back/curso
 
 go 1.22.5
 

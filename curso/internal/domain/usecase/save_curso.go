@@ -5,10 +5,10 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/dto"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/entity"
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/repository"
-	"github.com/ggialluisi/fdqf-ms/curso/pkg/event_dispatcher"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/dto"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/repository"
+	"github.com/77InnovationLabs/nebula-back/curso/pkg/event_dispatcher"
 	"github.com/google/uuid"
 )
 

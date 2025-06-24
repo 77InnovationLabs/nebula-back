@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"github.com/ggialluisi/fdqf-ms/curso/internal/domain/entity"
+	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
 	"github.com/google/uuid"
 )
 
