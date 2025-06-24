@@ -2,87 +2,84 @@ package main
 
 import (
 	"context"
-	"fmt"
 	"log"
+	"os"
 	"strings"
 	"sync"
 	"time"
 
-	"github.com/segmentio/kafka-go"
+	"github.com/IBM/sarama"
 )
 
-// Estrutura que representa um consumidor Kafka
+// Estrutura do consumidor usando Sarama
 type KafkaConsumer struct {
-	topic     string
-	partition int
-	brokers   []string
-	handler   func(msg kafka.Message) error // Função handler para processar cada mensagem
+	Topic   string
+	GroupID string
+	Brokers []string
+	Handler sarama.ConsumerGroupHandler
 }
 
-// Função para inicializar o consumidor Kafka
-func (kc *KafkaConsumer) StartConsuming(wg *sync.WaitGroup, broker string) {
-	defer wg.Done() // Decrementa o contador do WaitGroup quando a função terminar
+// Config global Sarama para reuso
+func newSaramaConfig() *sarama.Config {
+	config := sarama.NewConfig()
+	config.Version = sarama.V2_6_0_0
 
-	// Inicializando o leitor (consumer)
-	reader := kafka.NewReader(kafka.ReaderConfig{
-		Brokers:   []string{broker},
-		Topic:     kc.topic,
-		Partition: kc.partition,
-		MinBytes:  10e3, // 10KB
-		MaxBytes:  10e6, // 10MB
-	})
-
-	// Consome mensagens indefinidamente
-	for {
-		// Timeout para leitura da mensagem
-		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
-		defer cancel()
-
-		// Lendo a mensagem
-		msg, err := reader.ReadMessage(ctx)
-		if err != nil {
-			log.Printf("Erro ao ler mensagem do tópico '%s' no broker '%s': %v\n", kc.topic, broker, err)
-			continue
-		}
-
-		// Executa o handler definido para o consumidor
-		kc.handler(msg)
+	// SASL + TLS para Confluent Cloud
+	if os.Getenv("ENV") == "LOCAL" {
+		config.Net.SASL.Enable = false
+		config.Consumer.Return.Errors = false
+	} else {
+		config.Net.SASL.Enable = true
+		config.Net.SASL.User = os.Getenv("KAFKA_KEY")
+		config.Net.SASL.Password = os.Getenv("KAFKA_SECRET")
+		config.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+		config.Net.TLS.Enable = true
 	}
+	config.Consumer.Return.Errors = true
+	return config
 }
 
-// Função que inicializa múltiplos consumidores para cada broker
+// StartConsumers inicia todos os ConsumerGroups
 func startKafkaConsumers(consumers []*KafkaConsumer) {
 	var wg sync.WaitGroup
 
-	// Iniciar cada consumidor Kafka em uma goroutine para cada broker
 	for _, consumer := range consumers {
-		for _, broker := range consumer.brokers {
-			wg.Add(1)
-			go consumer.StartConsuming(&wg, broker)
-		}
+		wg.Add(1)
+		go func(c *KafkaConsumer) {
+			defer wg.Done()
+
+			config := newSaramaConfig()
+			client, err := sarama.NewConsumerGroup(c.Brokers, c.GroupID, config)
+			if err != nil {
+				log.Fatalf("❌ Erro ao criar ConsumerGroup: %v", err)
+			}
+			defer client.Close()
+
+			ctx := context.Background()
+			for {
+				err := client.Consume(ctx, []string{c.Topic}, c.Handler)
+				if err != nil {
+					log.Printf("❌ Erro no ConsumerGroup %s: %v", c.GroupID, err)
+					time.Sleep(5 * time.Second)
+				}
+			}
+		}(consumer)
 	}
 
-	// Aguardar até que todos os consumidores terminem (não deve acontecer em um loop infinito)
 	wg.Wait()
 }
 
-func startKafka(kafka_brokers string) error {
-	// Garantir que os tópicos existem
-	err := ensureKafkaTopics(kafka_brokers)
+// Exemplo para criar tópicos usando Sarama
+func ensureKafkaTopics(brokers []string) error {
+	config := sarama.NewConfig()
+	config.Version = sarama.V2_5_0_0 // Compatível com Confluent Cloud
+
+	admin, err := sarama.NewClusterAdmin(brokers, config)
 	if err != nil {
-		log.Fatalf("Erro ao garantir a existência dos tópicos Kafka: %v", err)
 		return err
 	}
+	defer admin.Close()
 
-	//registra os consumidores
-	// go startKafkaConsumer(kafka_brokers, "curso.saved")
-
-	return nil
-}
-
-func ensureKafkaTopics(kafka_brokers string) error {
-	// Configurar os tópicos Kafka
-	brokers := strings.Split(kafka_brokers, ",")
 	topics := []string{
 		"curso.saved",
 		"curso.deleted",
@@ -95,39 +92,50 @@ func ensureKafkaTopics(kafka_brokers string) error {
 	}
 
 	for _, topic := range topics {
-		conn, err := kafka.Dial("tcp", brokers[0])
-		if err != nil {
-			return err
-		}
-		defer conn.Close()
-
-		controller, err := conn.Controller()
-		if err != nil {
-			return err
-		}
-		address := fmt.Sprintf("%s:%d", controller.Host, controller.Port)
-		conn, err = kafka.Dial("tcp", address)
-		if err != nil {
-			return err
-		}
-		defer conn.Close()
-
-		topicConfigs := kafka.TopicConfig{
-			Topic:             topic,
+		err := admin.CreateTopic(topic, &sarama.TopicDetail{
 			NumPartitions:     1,
 			ReplicationFactor: 1,
-		}
-
-		err = conn.CreateTopics(topicConfigs)
+		}, false)
 		if err != nil {
-			if strings.Contains(err.Error(), "Topic with this name already exists") {
-				log.Printf("Tópico %s já existe\n", topic)
-			} else {
-				return err
+			// O Sarama retorna TopicError embutido no erro
+			if e, ok := err.(*sarama.TopicError); ok {
+				if e.Err == sarama.ErrTopicAlreadyExists {
+					log.Printf("🔍 Tópico %s já existe.", topic)
+					continue
+				}
 			}
-		} else {
-			log.Printf("Tópico %s criado com sucesso\n", topic)
+			return err
 		}
+		log.Printf("✅ Tópico %s criado com sucesso!", topic)
+	}
+
+	return nil
+}
+
+// Handler base para ConsumerGroup
+type SimpleHandler struct {
+	handleFunc func(msg *sarama.ConsumerMessage) error
+}
+
+func (h *SimpleHandler) Setup(_ sarama.ConsumerGroupSession) error   { return nil }
+func (h *SimpleHandler) Cleanup(_ sarama.ConsumerGroupSession) error { return nil }
+func (h *SimpleHandler) ConsumeClaim(sess sarama.ConsumerGroupSession, claim sarama.ConsumerGroupClaim) error {
+	for msg := range claim.Messages() {
+		err := h.handleFunc(msg)
+		if err == nil {
+			sess.MarkMessage(msg, "")
+		}
+	}
+	return nil
+}
+
+// Exemplo de inicialização do Kafka em main:
+func startKafka(brokers string) error {
+	broker_list := strings.Split(brokers, ",")
+	err := ensureKafkaTopics(broker_list)
+	if err != nil {
+		log.Fatalf("❌ Erro ao criar/verificar tópicos: %v", err)
+		return err
 	}
 	return nil
 }

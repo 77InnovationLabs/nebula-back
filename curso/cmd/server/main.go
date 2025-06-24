@@ -8,9 +8,6 @@ import (
 	"strconv"
 	"strings"
 
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
-
 	"github.com/77InnovationLabs/nebula-back/curso/internal/domain/entity"
 	domain_event "github.com/77InnovationLabs/nebula-back/curso/internal/domain/event"
 	event_handler "github.com/77InnovationLabs/nebula-back/curso/internal/domain/event/handler"
@@ -20,11 +17,11 @@ import (
 	msg_kafka "github.com/77InnovationLabs/nebula-back/curso/internal/infra/messaging/kafka"
 	"github.com/77InnovationLabs/nebula-back/curso/internal/infra/web"
 	events_pkg "github.com/77InnovationLabs/nebula-back/curso/pkg/event_dispatcher"
-	"github.com/segmentio/kafka-go"
 
-	_ "github.com/77InnovationLabs/nebula-back/curso/docs"
-
+	"github.com/IBM/sarama"
 	"github.com/go-chi/jwtauth"
+	"gorm.io/driver/postgres"
+	"gorm.io/gorm"
 )
 
 // @title           FDQF - Microserviço de Cursos
@@ -39,48 +36,40 @@ import (
 // @license.name   FDQF License
 // @license.url    http://license.fdqf.com.br
 
-// @host      localhost:8082
+// @host      localhost:8083
 // @BasePath  /
 func main() {
-
-	// Carregando variáveis de ambiente
-	frontend_url := os.Getenv("FRONTEND_URL")
-	log.Println("Frontend URL:", frontend_url)
-	if frontend_url == "" {
-		log.Println("FRONTEND_URL não configurada, usando valor padrão http://localhost:3000")
-		frontend_url = "http://localhost:3000"
+	// Vars
+	frontendURL := os.Getenv("FRONTEND_URL")
+	if frontendURL == "" {
+		frontendURL = "http://localhost:3000"
 	}
+	log.Println("✅ FRONTEND_URL:", frontendURL)
 
 	dbUser := os.Getenv("DB_CURSO_USER")
 	dbPassword := os.Getenv("DB_CURSO_PASSWORD")
 	dbName := os.Getenv("DB_CURSO_NAME")
 	dbHost := os.Getenv("DB_CURSO_HOST")
 	dbPort := os.Getenv("DB_CURSO_PORT")
+	servicePort := os.Getenv("CURSO_SERVICE_PORT")
 
-	service_port := os.Getenv("CURSO_SERVICE_PORT")
+	kafkaBrokers := os.Getenv("KAFKA_BROKERS")
+	kafkaBrokersList := strings.Split(kafkaBrokers, ",")
 
-	kafka_brokers := os.Getenv("KAFKA_BROKERS")
-	kafka_brokers_list := strings.Split(kafka_brokers, ",")
-
-	// Inicialização do KAFKA
-	err := startKafka(
-		kafka_brokers,
-	)
-	if err != nil {
-		log.Fatalf("Erro ao inicializar Kafka: %v", err)
+	// ✅ Inicializa Kafka (create topics)
+	if err := ensureKafkaTopics(kafkaBrokersList); err != nil {
+		log.Fatalf("Erro Kafka: %v", err)
 	}
 
-	// String de conexão com o PostgreSQL
+	// ✅ PostgreSQL
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
 		dbHost, dbUser, dbPassword, dbName, dbPort)
-
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
-		log.Fatalf("failed to connect to database: %v", err)
+		log.Fatalf("Erro DB: %v", err)
 	}
 
-	//executa as migrações de todas entidades
-	err = db.AutoMigrate(
+	if err := db.AutoMigrate(
 		&entity.User{},
 		&entity.Pessoa{},
 		&entity.Curso{},
@@ -91,91 +80,76 @@ func main() {
 		&entity.ItemModuloAula{},
 		&entity.ItemModuloContractValidation{},
 		&entity.AlunoCursoItemModulo{},
-	)
-	if err != nil {
-		log.Fatalf("failed to migrate database: %v", err)
+	); err != nil {
+		log.Fatalf("Erro AutoMigrate: %v", err)
 	}
 
-	//inicializar repositorios de cada agregado
 	cursoDB := database.NewCursoRepositoryGorm(db)
 	pessoaDB := database.NewPessoaRepositoryGorm(db)
 	userDB := database.NewUserRepositoryGorm(db)
 
-	// Inicializar os handlers do consumidor Kafka
-	pessoaChangedHandler := msg_kafka.NewPessoaKafkaHandlers(pessoaDB)
-	// userChangedHandler := msg_kafka.NewUserKafkaHandlers(userDB)
+	// ✅ Sarama Consumer: define handlers
+	pessoaHandler := msg_kafka.NewPessoaKafkaHandlers(pessoaDB)
 
-	// Criar uma lista de consumidores Kafka, com handlers personalizados
 	consumers := []*KafkaConsumer{
 		{
-			topic:     "pessoa.saved",
-			partition: 0,
-			brokers:   kafka_brokers_list,
-			handler: func(msg kafka.Message) error {
-				return pessoaChangedHandler.CreateOrUpdatePessoa(msg)
+			Topic:   "pessoa.saved",
+			GroupID: "curso-group",
+			Brokers: kafkaBrokersList,
+			Handler: &SimpleHandler{
+				handleFunc: func(msg *sarama.ConsumerMessage) error {
+					return pessoaHandler.CreateOrUpdatePessoa(msg)
+				},
 			},
 		},
 	}
 
-	// Executar os consumidores Kafka em uma goroutine
 	go startKafkaConsumers(consumers)
 
-	//inicializa os eventos
-	curso_changed_event := domain_event.NewCursoChanged()
-	modulo_changed_event := domain_event.NewModuloChanged()
-	aluno_changed_event := domain_event.NewAlunoChanged()
-	aluno_curso_changed_event := domain_event.NewAlunoCursoChanged()
-	item_modulo_changed_event := domain_event.NewItemModuloChanged()
-
-	//incializar event dispatchers
+	// ✅ Eventos + Producer
 	eventDispatcher := events_pkg.NewEventDispatcher()
-	eventDispatcher.Register(
-		curso_changed_event.Name,
-		&event_handler.CursoChangedKafkaHandler{
-			KafkaProducer: msg_kafka.NewKafkaProducer(kafka_brokers_list, "curso.saved"),
-		},
-	)
 
-	//inicializa o jwtAuth
+	producer := msg_kafka.NewKafkaProducer(kafkaBrokersList, "curso-saved", os.Getenv("KAFKA_KEY"), os.Getenv("KAFKA_SECRET"))
+
+	cursoEvent := domain_event.NewCursoChanged()
+	eventDispatcher.Register(cursoEvent.Name, &event_handler.CursoChangedKafkaHandler{
+		KafkaProducer: producer,
+	})
+
+	// ✅ JWT
 	tokenAuth := jwtauth.New("HS256", []byte(os.Getenv("JWT_SECRET")), nil)
-	jwt_expires_in, err := strconv.Atoi(os.Getenv("JWT_EXPIRESIN"))
+	jwtExpiresIn, err := strconv.Atoi(os.Getenv("JWT_EXPIRESIN"))
 	if err != nil {
-		log.Println("JWT_EXPIRESIN não configurado, usando valor padrão 300")
-		jwt_expires_in = 300
+		jwtExpiresIn = 300
 	}
 
-	//inicializar handlers
+	// ✅ Handlers API
 	cursoApiHandlers := api.NewCursoHandlers(
 		eventDispatcher,
 		cursoDB,
-		curso_changed_event,
-		modulo_changed_event,
-		aluno_changed_event,
-		aluno_curso_changed_event,
-		item_modulo_changed_event,
+		cursoEvent,
+		domain_event.NewModuloChanged(),
+		domain_event.NewAlunoChanged(),
+		domain_event.NewAlunoCursoChanged(),
+		domain_event.NewItemModuloChanged(),
 		pessoaDB,
 	)
-	userApiHandlers := api.NewUserHandlers(
-		userDB,
-		tokenAuth,
-		jwt_expires_in,
-	)
+	userApiHandlers := api.NewUserHandlers(userDB, tokenAuth, jwtExpiresIn)
 
-	// Configurar o admin com qor5
+	// ✅ Admin
 	adminPanel := admin.InitializeAdmin(db)
 
-	// Setup do router
+	// ✅ Router
 	router := web.SetupRoutes(
-		frontend_url,
-		service_port,
+		frontendURL,
+		servicePort,
 		tokenAuth,
-		jwt_expires_in,
+		jwtExpiresIn,
 		cursoApiHandlers,
 		userApiHandlers,
 		adminPanel,
 	)
 
-	// Inicializar o servidor
-	log.Printf("Iniciando servidor na porta: %s", service_port)
-	http.ListenAndServe(":"+service_port, router)
+	log.Printf("🚀 Rodando na porta :%s", servicePort)
+	http.ListenAndServe(":"+servicePort, router)
 }

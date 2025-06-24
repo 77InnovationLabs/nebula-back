@@ -6,5 +6,4 @@ import "context"
 
 type KafkaProducerInterface interface {
 	PublishMessage(ctx context.Context, key, value string) error
-	Close() error
 }

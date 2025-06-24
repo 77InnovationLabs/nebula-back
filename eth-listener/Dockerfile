@@ -1,5 +1,5 @@
 # Usar a imagem oficial do Golang
-FROM golang:1.22
+FROM golang:1.24
 
 # Criar diretório de trabalho dentro do contêiner
 WORKDIR /app

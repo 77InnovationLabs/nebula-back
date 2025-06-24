@@ -74,6 +74,8 @@ services:
     build:
       context: ./pessoa
     environment:
+      - ENV=${ENV}
+      - FRONTEND_URL=${FRONTEND_URL}
       - PESSOA_SERVICE_PORT=${PESSOA_SERVICE_PORT}
       - DB_PESSOA_USER=${DB_PESSOA_USER}
       - DB_PESSOA_PASSWORD=${DB_PESSOA_PASSWORD}
@@ -114,6 +116,7 @@ services:
     build:
       context: ./curso
     environment:
+      - ENV=${ENV}
       - FRONTEND_URL=${FRONTEND_URL}
       - CURSO_SERVICE_PORT=${CURSO_SERVICE_PORT}
       - DB_CURSO_USER=${DB_CURSO_USER}

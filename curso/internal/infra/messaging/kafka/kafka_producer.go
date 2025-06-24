@@ -2,47 +2,85 @@ package kafka
 
 import (
 	"context"
+	"crypto/tls"
 	"log"
+	"os"
+	"time"
 
-	"github.com/segmentio/kafka-go"
+	"github.com/IBM/sarama"
 )
 
 type KafkaProducer struct {
-	Writer *kafka.Writer
+	Producer sarama.SyncProducer
+	Topic    string
 }
 
-func NewKafkaProducer(brokers []string, topic string) *KafkaProducer {
+func NewKafkaProducer(brokers []string, topic, username, password string) *KafkaProducer {
 	if topic == "" {
-		log.Fatal("Kafka topic must be specified")
+		log.Fatal("❌ Erro: Tópico Kafka deve ser especificado")
 	}
 
-	writer := kafka.NewWriter(kafka.WriterConfig{
-		Brokers: brokers,
-		Topic:   topic,
-	})
+	config := sarama.NewConfig()
+	config.Producer.Return.Successes = true
+	config.Producer.RequiredAcks = sarama.WaitForAll
+	config.Producer.Retry.Max = 5
+	config.Producer.Idempotent = true
+	config.Net.MaxOpenRequests = 1
+
+	// SASL/SSL para Confluent Cloud
+	if os.Getenv("ENV") == "LOCAL" {
+		config.Net.SASL.Enable = false
+		config.Net.TLS.Enable = false
+	} else {
+		config.Net.SASL.Enable = true
+		config.Net.SASL.User = username
+		config.Net.SASL.Password = password
+		config.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+		config.Net.TLS.Enable = true
+		config.Net.TLS.Config = &tls.Config{}
+	}
+
+	// Timeouts de rede recomendados
+	config.Net.DialTimeout = 10 * time.Second
+	config.Net.ReadTimeout = 10 * time.Second
+	config.Net.WriteTimeout = 10 * time.Second
+
+	config.Version = sarama.V2_5_0_0 // compatível com brokers Confluent Cloud
+
+	producer, err := sarama.NewSyncProducer(brokers, config)
+	if err != nil {
+		log.Fatalf("❌ Erro ao criar producer Sarama: %v", err)
+	}
+
+	log.Printf("✅ Kafka Producer pronto | Brokers: %v | Tópico: %s", brokers, topic)
 
 	return &KafkaProducer{
-		Writer: writer,
+		Producer: producer,
+		Topic:    topic,
 	}
 }
 
 func (p *KafkaProducer) PublishMessage(ctx context.Context, key, value string) error {
-	msg := kafka.Message{
-		Key:   []byte(key),
-		Value: []byte(value),
+	msg := &sarama.ProducerMessage{
+		Topic: p.Topic,
+		Key:   sarama.StringEncoder(key),
+		Value: sarama.StringEncoder(value),
 	}
 
-	err := p.Writer.WriteMessages(ctx, msg)
+	partition, offset, err := p.Producer.SendMessage(msg)
 	if err != nil {
-		log.Printf("Erro ao publicar mensagem no Kafka: %v", err)
+		log.Printf("❌ Erro ao publicar mensagem Kafka: %v", err)
 		return err
 	}
-	log.Printf("Mensagem publicada no Kafka: %s", value)
+
+	log.Printf("📩 Mensagem publicada! Tópico: %s | Partição: %d | Offset: %d | Valor: %s",
+		p.Topic, partition, offset, value)
+
 	return nil
 }
 
 func (p *KafkaProducer) Close() error {
-	return p.Writer.Close()
+	return p.Producer.Close()
 }
 
 // Verifica se KafkaProducer implementa KafkaProducerInterface

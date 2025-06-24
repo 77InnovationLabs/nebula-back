@@ -4,45 +4,44 @@ import (
 	"context"
 	"log"
 
-	"github.com/segmentio/kafka-go"
+	"github.com/IBM/sarama"
 )
 
 type KafkaProducer struct {
-	Writer *kafka.Writer
+	Producer sarama.SyncProducer
+	Topic    string
 }
 
-func NewKafkaProducer(brokers []string, topic string) *KafkaProducer {
+// NewKafkaProducer cria um produtor específico para um tópico usando um SyncProducer global.
+func NewKafkaProducer(producer sarama.SyncProducer, topic string) *KafkaProducer {
 	if topic == "" {
-		log.Fatal("Kafka topic must be specified")
+		log.Fatal("❌ Erro: O tópico Kafka deve ser especificado")
 	}
-
-	writer := kafka.NewWriter(kafka.WriterConfig{
-		Brokers: brokers,
-		Topic:   topic,
-	})
 
 	return &KafkaProducer{
-		Writer: writer,
+		Producer: producer,
+		Topic:    topic,
 	}
 }
 
+// PublishMessage publica uma mensagem usando o Sarama Producer.
 func (p *KafkaProducer) PublishMessage(ctx context.Context, key, value string) error {
-	msg := kafka.Message{
-		Key:   []byte(key),
-		Value: []byte(value),
+	msg := &sarama.ProducerMessage{
+		Topic: p.Topic,
+		Key:   sarama.StringEncoder(key),
+		Value: sarama.StringEncoder(value),
 	}
 
-	err := p.Writer.WriteMessages(ctx, msg)
+	partition, offset, err := p.Producer.SendMessage(msg)
 	if err != nil {
-		log.Printf("Erro ao publicar mensagem no Kafka: %v", err)
+		log.Printf("❌ Erro ao publicar mensagem no Kafka: %v", err)
 		return err
 	}
-	log.Printf("Mensagem publicada no Kafka: %s", value)
-	return nil
-}
 
-func (p *KafkaProducer) Close() error {
-	return p.Writer.Close()
+	log.Printf("📩 Mensagem publicada no Kafka! Tópico: %s | Partição: %d | Offset: %d | Valor: %s",
+		p.Topic, partition, offset, value)
+
+	return nil
 }
 
 // Verifica se KafkaProducer implementa KafkaProducerInterface

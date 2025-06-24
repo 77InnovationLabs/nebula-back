@@ -93,6 +93,13 @@ tidy:
 	cd eth-listener && go mod tidy
 
 # Limpar arquivos binários para ambos os microserviços
+mod-download:
+	@echo "GO MOD DOWNLOAD geral..."
+	cd pessoa && go mod download
+	cd curso && go mod download
+	cd eth-listener && go mod download
+
+# Limpar arquivos binários para ambos os microserviços
 swag:
 	@echo "SWAGG INIT geral..."
 	cd pessoa && swag init -g cmd/server/main.go

@@ -3,63 +3,59 @@ package main
 import (
 	"fmt"
 	"log"
+	"os"
 	"strings"
 
-	"github.com/segmentio/kafka-go"
+	"github.com/IBM/sarama"
 )
 
-func startKafka(kafka_brokers string) error {
-	// Garantir que os tópicos existem
-	err := ensureKafkaTopics(kafka_brokers)
-	if err != nil {
-		log.Fatalf("Erro ao garantir a existência dos tópicos Kafka: %v", err)
-		return err
+// Inicializa Sarama e garante os tópicos necessários
+func startKafka(brokers string) error {
+	brokerList := strings.Split(brokers, ",")
+
+	// Criar configuração Sarama
+	config := sarama.NewConfig()
+	config.Version = sarama.V2_6_0_0 // ou outra versão compatível com Confluent Cloud
+	config.Producer.Return.Successes = true
+
+	if os.Getenv("ENV") == "LOCAL" {
+		config.Net.SASL.Enable = false
+		config.Net.TLS.Enable = false
+	} else {
+		config.Net.SASL.Enable = true
+		config.Net.SASL.User = os.Getenv("KAFKA_KEY")
+		config.Net.SASL.Password = os.Getenv("KAFKA_SECRET")
+		config.Net.SASL.Mechanism = sarama.SASLTypePlaintext
+		config.Net.TLS.Enable = true
 	}
 
-	return nil
-}
-func ensureKafkaTopics(kafka_brokers string) error {
-	// Configurar os tópicos Kafka
-	brokers := strings.Split(kafka_brokers, ",")
+	admin, err := sarama.NewClusterAdmin(brokerList, config)
+	if err != nil {
+		return fmt.Errorf("❌ Erro ao criar ClusterAdmin: %v", err)
+	}
+	defer admin.Close()
+
 	topics := []string{
 		"pessoa.saved",
 		"pessoa.deleted",
 	}
 
 	for _, topic := range topics {
-		conn, err := kafka.Dial("tcp", brokers[0])
-		if err != nil {
-			return err
-		}
-		defer conn.Close()
-
-		controller, err := conn.Controller()
-		if err != nil {
-			return err
-		}
-		address := fmt.Sprintf("%s:%d", controller.Host, controller.Port)
-		conn, err = kafka.Dial("tcp", address)
-		if err != nil {
-			return err
-		}
-		defer conn.Close()
-
-		topicConfigs := kafka.TopicConfig{
-			Topic:             topic,
+		err := admin.CreateTopic(topic, &sarama.TopicDetail{
 			NumPartitions:     1,
-			ReplicationFactor: 1,
-		}
+			ReplicationFactor: 3,
+		}, false)
 
-		err = conn.CreateTopics(topicConfigs)
 		if err != nil {
-			if strings.Contains(err.Error(), "Topic with this name already exists") {
-				log.Printf("Tópico %s já existe\n", topic)
+			if err.(sarama.KError) == sarama.ErrTopicAlreadyExists {
+				log.Printf("🔍 Tópico '%s' já existe.", topic)
 			} else {
-				return err
+				return fmt.Errorf("❌ Erro ao criar tópico '%s': %v", topic, err)
 			}
 		} else {
-			log.Printf("Tópico %s criado com sucesso\n", topic)
+			log.Printf("✅ Tópico '%s' criado com sucesso!", topic)
 		}
 	}
+
 	return nil
 }
