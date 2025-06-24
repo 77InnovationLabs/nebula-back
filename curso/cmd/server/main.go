@@ -46,6 +46,7 @@ func main() {
 	}
 	log.Println("✅ FRONTEND_URL:", frontendURL)
 
+	db_sslmode := os.Getenv("DB_SSLMODE")
 	dbUser := os.Getenv("DB_CURSO_USER")
 	dbPassword := os.Getenv("DB_CURSO_PASSWORD")
 	dbName := os.Getenv("DB_CURSO_NAME")
@@ -66,8 +67,8 @@ func main() {
 	}
 
 	// ✅ PostgreSQL
-	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=disable",
-		dbHost, dbUser, dbPassword, dbName, dbPort)
+	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=%s sslmode=%s",
+		dbHost, dbUser, dbPassword, dbName, dbPort, db_sslmode)
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		log.Fatalf("Erro DB: %v", err)
