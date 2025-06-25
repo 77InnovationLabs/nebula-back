@@ -53,7 +53,10 @@ func main() {
 	dbHost := os.Getenv("DB_CURSO_HOST")
 	dbPort := os.Getenv("DB_CURSO_PORT")
 	servicePort := os.Getenv("CURSO_SERVICE_PORT")
-
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = servicePort
+	}
 	kafkaBrokers := os.Getenv("KAFKA_BROKERS")
 	kafkaBrokersList := strings.Split(kafkaBrokers, ",")
 
@@ -155,6 +158,6 @@ func main() {
 		adminPanel,
 	)
 
-	log.Printf("🚀 Rodando na porta :%s", servicePort)
-	http.ListenAndServe(":"+servicePort, router)
+	log.Printf("🚀 Rodando na porta :%s", port)
+	http.ListenAndServe(":"+port, router)
 }

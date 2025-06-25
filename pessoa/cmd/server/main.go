@@ -45,6 +45,10 @@ func main() {
 	dbHost := os.Getenv("DB_PESSOA_HOST")
 	dbPort := os.Getenv("DB_PESSOA_PORT")
 	servicePort := os.Getenv("PESSOA_SERVICE_PORT")
+	port := os.Getenv("PORT")
+	if port == "" {
+		port = servicePort
+	}
 
 	kafkaBrokers := strings.Split(os.Getenv("KAFKA_BROKERS"), ",")
 	kafkaUser := os.Getenv("KAFKA_KEY")
@@ -180,6 +184,6 @@ func main() {
 	r.Mount("/admin", adminPanel)
 
 	// ✅ Iniciar servidor
-	log.Printf("🚀 Pessoa Service rodando na porta :%s", servicePort)
-	http.ListenAndServe(":"+servicePort, r)
+	log.Printf("🚀 Pessoa Service rodando na porta :%s", port)
+	http.ListenAndServe(":"+port, r)
 }
