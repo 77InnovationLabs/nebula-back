@@ -44,6 +44,9 @@ func initializeProject(db *gorm.DB) (b *presets.Builder) {
 	setupAlunoCursoAdmin(b)
 	setupItemModuloAdmin(b)
 	setupAlunoCursoItemModuloAdmin(b)
+	setupItemModuloAulaAdmin(b)
+	setupItemModuloContractValidationAdmin(b)
+	setupItemModuloVideoAdmin(b)
 
 	return b
 }
@@ -102,5 +105,26 @@ func setupAlunoCursoItemModuloAdmin(b *presets.Builder) {
 	// Register model into the builder
 	// Use m to customize the model
 	m := b.Model(&entity.AlunoCursoItemModulo{})
+	_ = m
+}
+
+func setupItemModuloAulaAdmin(b *presets.Builder) {
+	// Register model into the builder
+	// Use m to customize the model
+	m := b.Model(&entity.ItemModuloAula{})
+	_ = m
+}
+
+func setupItemModuloContractValidationAdmin(b *presets.Builder) {
+	// Register model into the builder
+	// Use m to customize the model
+	m := b.Model(&entity.ItemModuloContractValidation{})
+	_ = m
+}
+
+func setupItemModuloVideoAdmin(b *presets.Builder) {
+	// Register model into the builder
+	// Use m to customize the model
+	m := b.Model(&entity.ItemModuloVideo{})
 	_ = m
 }

@@ -234,7 +234,21 @@ func (r *CursoRepositoryGorm) DeleteAlunoCurso(objID uuid.UUID) error {
 	if err != nil {
 		return err
 	}
-	return r.DB.Delete(&entity.AlunoCurso{}, obj.ID).Error
+	tx := r.DB.Begin()
+
+	// deleta os filhos primeiro
+	if err := tx.Where("aluno_curso_id = ?", obj.ID).Delete(&entity.AlunoCursoItemModulo{}).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	// depois deleta o pai
+	if err := tx.Delete(&entity.AlunoCurso{}, obj.ID).Error; err != nil {
+		tx.Rollback()
+		return err
+	}
+
+	return tx.Commit().Error
 }
 func (r *CursoRepositoryGorm) GetAlunoCurso(objID uuid.UUID) (*entity.AlunoCurso, error) {
 	var obj entity.AlunoCurso
@@ -303,7 +317,11 @@ func (r *CursoRepositoryGorm) CreateItemModulo(item *entity.ItemModulo) error {
 
 func (r *CursoRepositoryGorm) FindItemModuloByID(id uuid.UUID) (*entity.ItemModulo, error) {
 	var item entity.ItemModulo
-	err := r.DB.Preload("Aula").Preload("ContractValidation").Where("id = ?", id.String()).First(&item).Error
+	err := r.DB.
+		Preload("Aula").
+		Preload("ContractValidation").
+		Preload("Video").
+		Where("id = ?", id.String()).First(&item).Error
 	if err != nil {
 		return nil, err
 	}
@@ -311,7 +329,11 @@ func (r *CursoRepositoryGorm) FindItemModuloByID(id uuid.UUID) (*entity.ItemModu
 }
 func (r *CursoRepositoryGorm) FindItemModulosByModulo(moduloID uuid.UUID) ([]entity.ItemModulo, error) {
 	var itens []entity.ItemModulo
-	err := r.DB.Preload("Aula").Preload("ContractValidation").Where("modulo_id = ?", moduloID.String()).Find(&itens).Error
+	err := r.DB.
+		Preload("Aula").
+		Preload("ContractValidation").
+		Preload("Video").
+		Where("modulo_id = ?", moduloID.String()).Find(&itens).Error
 	if err != nil {
 		return nil, err
 	}
@@ -412,7 +434,13 @@ func (r *CursoRepositoryGorm) CreateAlunoCursoItemModulosBatch(items []*entity.A
 // FindItemModulosByAlunoCurso lista todos os itens de módulo de uma matrícula.
 func (r *CursoRepositoryGorm) FindItemModulosByAlunoCurso(alunoCursoID uuid.UUID) ([]entity.AlunoCursoItemModulo, error) {
 	var itens []entity.AlunoCursoItemModulo
-	err := r.DB.Preload("ItemModulo").Preload("AlunoCurso").Where("aluno_curso_id = ?", alunoCursoID).Find(&itens).Error
+	err := r.DB.
+		Preload("ItemModulo").
+		Preload("ItemModulo.Aula").
+		Preload("ItemModulo.ContractValidation").
+		Preload("ItemModulo.Video").
+		Preload("AlunoCurso").
+		Where("aluno_curso_id = ?", alunoCursoID).Find(&itens).Error
 	return itens, err
 }
 

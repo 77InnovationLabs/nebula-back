@@ -87,6 +87,7 @@ func main() {
 		&entity.ItemModulo{},
 		&entity.ItemModuloAula{},
 		&entity.ItemModuloContractValidation{},
+		&entity.ItemModuloVideo{},
 		&entity.AlunoCursoItemModulo{},
 	); err != nil {
 		log.Fatalf("Erro AutoMigrate: %v", err)

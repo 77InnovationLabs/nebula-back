@@ -38,7 +38,7 @@ type AlunoCursoItemModulo struct {
 	Status    TipoStatusItemModulo `gorm:"type:varchar(50)" json:"status"` // Ex: não iniciado, em andamento, concluído
 	Progresso float32              `gorm:"type:numeric" json:"progresso"`  // 0-100%
 
-	// Específicos para AULA
+	// Específicos para AULA e VIDEO
 	TempoAssistido int64 `gorm:"type:int" json:"tempo_assistido"` // segundos
 
 	// Específicos para VALIDACAO_CONTRATO

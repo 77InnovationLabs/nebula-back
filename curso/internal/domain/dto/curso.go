@@ -128,6 +128,10 @@ type ItemModuloAulaDTO struct {
 	Texto string `json:"texto"`
 }
 
+type ItemModuloVideoDTO struct {
+	VideoUrl string `json:"video_url"`
+}
+
 type ItemModuloContractValidationDTO struct {
 	Rede             string `json:"rede"`
 	EnderecoContrato string `json:"endereco_contrato"`
@@ -141,6 +145,7 @@ type ItemModuloInputDTO struct {
 	Tipo               string                           `json:"tipo"`
 	Aula               *ItemModuloAulaDTO               `json:"aula,omitempty"`
 	ContractValidation *ItemModuloContractValidationDTO `json:"contract_validation,omitempty"`
+	Video              *ItemModuloVideoDTO              `json:"video,omitempty"`
 }
 
 type ItemModuloOutputDTO struct {
@@ -152,6 +157,7 @@ type ItemModuloOutputDTO struct {
 	Tipo               string                           `json:"tipo"`
 	Aula               *ItemModuloAulaDTO               `json:"aula,omitempty"`
 	ContractValidation *ItemModuloContractValidationDTO `json:"contract_validation,omitempty"`
+	Video              *ItemModuloVideoDTO              `json:"video,omitempty"`
 	Ordem              int                              `json:"ordem"`
 	CreatedAt          time.Time                        `json:"created_at"`
 	UpdatedAt          time.Time                        `json:"updated_at"`
@@ -166,6 +172,10 @@ type AlunoCursoItemModuloResponseDTO struct {
 	ItemModuloID            uuid.UUID                          `json:"item_modulo_id"`
 	ItemModuloNome          string                             `json:"item_modulo_nome"`
 	TipoItemModulo          entity.TipoItem                    `json:"tipo_item_modulo"`
+	ValidatorRede           string                             `json:"validator_rede"`
+	ValidatorEndereco       string                             `json:"validator_endereco"`
+	AulaTexto               string                             `json:"aula_texto"`
+	VideoUrl                string                             `json:"video_url"`
 	Status                  entity.TipoStatusItemModulo        `json:"status"`
 	Progresso               float32                            `json:"progresso"`
 	TempoAssistido          int64                              `json:"tempo_assistido"`

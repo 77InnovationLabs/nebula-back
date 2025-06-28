@@ -888,6 +888,13 @@ func (c *SaveCursoUseCase) ExecuteCreateItemModulo(input dto.ItemModuloInputDTO)
 				EnderecoContrato: input.ContractValidation.EnderecoContrato,
 			}
 		}
+	case entity.ItemVideo:
+		if input.Video != nil {
+			item.Video = &entity.ItemModuloVideo{
+				ItemModuloID: item.ID,
+				VideoUrl:     input.Video.VideoUrl,
+			}
+		}
 	}
 
 	err = c.CursoRepository.CreateItemModulo(item)
@@ -1004,6 +1011,11 @@ func toOutputDTO(item *entity.ItemModulo) dto.ItemModuloOutputDTO {
 			EnderecoContrato: item.ContractValidation.EnderecoContrato,
 		}
 	}
+	if item.Video != nil {
+		out.Video = &dto.ItemModuloVideoDTO{
+			VideoUrl: item.Video.VideoUrl,
+		}
+	}
 	return out
 }
 
@@ -1080,7 +1092,7 @@ func (c *SaveCursoUseCase) ExecuteFindAlunoCursoItemModulos(alunoCursoID string)
 
 	var output []dto.AlunoCursoItemModuloResponseDTO
 	for _, item := range itens {
-		output = append(output, dto.AlunoCursoItemModuloResponseDTO{
+		newItem := dto.AlunoCursoItemModuloResponseDTO{
 			ID:                      item.ID,
 			AlunoCursoID:            item.AlunoCursoID,
 			ItemModuloID:            item.ItemModuloID,
@@ -1095,7 +1107,19 @@ func (c *SaveCursoUseCase) ExecuteFindAlunoCursoItemModulos(alunoCursoID string)
 			StatusValidacaoContrato: item.StatusValidacaoContrato,
 			CreatedAt:               item.CreatedAt,
 			UpdatedAt:               item.UpdatedAt,
-		})
+		}
+		if item.ItemModulo.ContractValidation != nil {
+			newItem.EnderecoContratoValidar = item.ItemModulo.ContractValidation.EnderecoContrato
+			newItem.BlockchainRedeValidacao = string(item.ItemModulo.ContractValidation.Rede)
+		}
+		if item.ItemModulo.Aula != nil {
+			newItem.AulaTexto = item.ItemModulo.Aula.Texto
+		}
+		if item.ItemModulo.Video != nil {
+			newItem.VideoUrl = item.ItemModulo.Video.VideoUrl
+		}
+
+		output = append(output, newItem)
 	}
 
 	return output, nil

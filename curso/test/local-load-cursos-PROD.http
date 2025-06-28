@@ -1,91 +1,91 @@
 
 ### INCLUSÃO DE CURSO
-POST http://localhost:8083/cursos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/cursos HTTP/1.1
 Content-Type: application/json
 
 {
     "nome": "Ethereum Developer Pack",
-    "descricao": "Educamos de manera presencial y gratuita, con instructores de primer nivel en toda Latinoamérica junto a aliados claves como universidades y comunidades locales. El Ethereum Developer Pack es un grupo de cursos para aprender a desarrollar en el ecosistema de Ethereum. Son cinco módulos donde enseñamos desde lo más básico de blockchain hasta seguridad de Smart Contracts."
+    "descricao": "We provide free in-person education, with top-level instructors throughout Latin America alongside key allies such as universities and local communities. The Ethereum Developer Pack is a set of courses to learn how to develop in the Ethereum ecosystem. It consists of five modules, teaching from basic blockchain concepts to Smart Contract security."
 }
 
+
 ### GET ALUNOS
-GET http://localhost:8083/alunos HTTP/1.1
+GET https://curso-service-app-9213072c1209.herokuapp.com/alunos HTTP/1.1
 Content-Type: application/json
 
 ### GET CURSOS
-GET http://localhost:8083/cursos HTTP/1.1
+GET https://curso-service-app-9213072c1209.herokuapp.com/cursos HTTP/1.1
 Content-Type: application/json
 
 
 ### DELETE CURSOS
-DELETE http://localhost:8083/cursos/971c5d6f-afae-4485-ac91-9a0c9edb33fc HTTP/1.1
+DELETE https://curso-service-app-9213072c1209.herokuapp.com/cursos/971c5d6f-afae-4485-ac91-9a0c9edb33fc HTTP/1.1
 Content-Type: application/json
 
 
 ### DELETE MATRICULA
-DELETE http://localhost:8083/alunocursos/971c5d6f-afae-4485-ac91-9a0c9edb33fc HTTP/1.1
+DELETE https://curso-service-app-9213072c1209.herokuapp.com/alunocursos/971c5d6f-afae-4485-ac91-9a0c9edb33fc HTTP/1.1
 Content-Type: application/json
 
 
 
 
 ### GET MODULOS DO CURSO
-GET http://localhost:8083/cursos/a1682d7a-9d1a-4012-b723-060bff525487/modulos HTTP/1.1
+GET https://curso-service-app-9213072c1209.herokuapp.com/cursos/6a496314-2a6e-438a-b523-42201ca192b1/modulos HTTP/1.1
 Content-Type: application/json
 
 
 
 
 ### INCLUSÃO DE MODULOS
-POST http://localhost:8083/modulos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos HTTP/1.1
 Content-Type: application/json
 
 {
-    "curso_id": "a1682d7a-9d1a-4012-b723-060bff525487",
-    "nome": "Módulo 1: Intro a Smart Contracts",
-    "descricao": "Objetivo: Revisar los conceptos básicos de blockchain y Ethereum para entender la máquina descentralizada sobre la corren los smart contracts. Crear el primer smart contract en una testnet. Contenido: Blockchain/Wallets/Ethereum 101/Blockchain Explorer/Remix/Crea tu primer smart contract"
+    "curso_id": "6a496314-2a6e-438a-b523-42201ca192b1",
+    "nome": "Module 1: Introduction to Smart Contracts",
+    "descricao": "Objective: Review the basic concepts of blockchain and Ethereum to understand the decentralized machine running smart contracts. Create the first smart contract on a testnet. Content: Blockchain/Wallets/Ethereum 101/Blockchain Explorer/Remix/Create your first smart contract"
 }
 
-
 ### INCLUSÃO DE MODULOS
-POST http://localhost:8083/modulos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos HTTP/1.1
 Content-Type: application/json
 
 {
-    "curso_id": "a1682d7a-9d1a-4012-b723-060bff525487",
+    "curso_id": "6a496314-2a6e-438a-b523-42201ca192b1",
     "nome": "Módulo 2: Fundamentos de Solidity",
     "descricao": "Objetivo: Aprender el principal lenguaje para programar smart contracts: Solidity."
 }
 
 
 ### INCLUSÃO DE MODULOS
-POST http://localhost:8083/modulos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos HTTP/1.1
 Content-Type: application/json
 
 {
-    "curso_id": "a1682d7a-9d1a-4012-b723-060bff525487",
+    "curso_id": "6a496314-2a6e-438a-b523-42201ca192b1",
     "nome": "Módulo 3: Estándares, Librerías y Patrones",
     "descricao": "Objetivo: Profundizar en estándares como ERC 20, ERC-721 y otros. Conocer las principales librerías y buenas prácticas de diseño."
 }
 
 
 ### INCLUSÃO DE MODULOS
-POST http://localhost:8083/modulos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos HTTP/1.1
 Content-Type: application/json
 
 {
-    "curso_id": "a1682d7a-9d1a-4012-b723-060bff525487",
+    "curso_id": "6a496314-2a6e-438a-b523-42201ca192b1",
     "nome": "Módulo 4: Toolkit para desarrollo Web3",
     "descricao": "Objetivo:  Conectar el frontend a la blockchain, utilizando las principales herramientas del mercado para desarrollar en Web3."
 }
 
 
 ### INCLUSÃO DE MODULOS
-POST http://localhost:8083/modulos HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos HTTP/1.1
 Content-Type: application/json
 
 {
-    "curso_id": "a1682d7a-9d1a-4012-b723-060bff525487",
+    "curso_id": "6a496314-2a6e-438a-b523-42201ca192b1",
     "nome": "Módulo 5: Seguridad, Pruebas y Auditoría",
     "descricao": "Objetivo: Conocer metodologías para realizar pruebas, así como las principales vulnerabilidades en los smart contracts. Adicionalmente, aprender a prepararse para aprobar una auditoría de smart contracts."
 }
@@ -93,37 +93,38 @@ Content-Type: application/json
 
 
 
-### LISTA DE DE ITEM 1 EM MODULO 1
-GET http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
+### GET ITENS DO MODULO 1
+GET https://curso-service-app-9213072c1209.herokuapp.com/modulos/e49d7b90-8b1b-410e-89e0-a9899607ef64/itens HTTP/1.1
 Content-Type: application/json
 
 
 
 ### INLCUSAO DE ITEM 1 EM MODULO 1
-POST http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos/e49d7b90-8b1b-410e-89e0-a9899607ef64/itens HTTP/1.1
 Content-Type: application/json
 
 {
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
-  "nome": "Fundamentos de Blockchain",
-  "descricao": "Resumo do Conteúdo do módulo 1",
+  "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
+  "nome": "Blockchain Fundamentals",
+  "descricao": "Module 1 content summary...",
   "estimativa_tempo_minutos": 5,
   "tipo": "aula",
   "aula": {
-    "texto": "<!DOCTYPE html>\n<html lang=\"es\">\n<head>\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title>Fundamentos de Blockchain</title>\n</head>\n<body>\n    <h1>Fundamentos de Blockchain</h1>\n    <h2>Temario</h2>\n    <p>En esta sección aprenderás los siguiente:</p>\n    <ul>\n        <li>Antecedentes</li>\n        <li>Bitcoin</li>\n        <li>Qué es Blockchain</li>\n        <li>Conceptos Clave en Blockchain</li>\n        <li>Cómo funciona la Blockchain</li>\n        <li>Tipos de Blockchain</li>\n        <li>Modelos de Consenso</li>\n    </ul>\n</body>\n</html>"
+    "texto": "<!DOCTYPE html>\n<html lang='en'>\n<head>\n  <meta charset='UTF-8' />\n  <meta name='viewport' content='width=device-width, initial-scale=1.0'/>\n  <title>Blockchain Fundamentals</title>\n</head>\n<body>\n  <h1>Blockchain Fundamentals</h1>\n  <h2>Topics</h2>\n  <p>In this section, you will learn:</p>\n  <ul>\n    <li>Background</li>\n    <li>Bitcoin</li>\n    <li>What is Blockchain</li>\n    <li>Key Blockchain Concepts</li>\n    <li>How Blockchain Works</li>\n    <li>Types of Blockchain</li>\n    <li>Consensus Models</li>\n  </ul>\n</body>\n</html>"
   }
 }
 
 
 
+
 ### INLCUSAO DE ITEM 2 EM MODULO 1
-POST http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos/e49d7b90-8b1b-410e-89e0-a9899607ef64/itens HTTP/1.1
 Content-Type: application/json
 
 {
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
-  "nome": "Antecedentes de Blockchain",
-  "descricao": "Aula sobre antecedentes da blockchain",
+  "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
+  "nome": "Blockchain Background",
+  "descricao": "Class about blockchain background",
   "estimativa_tempo_minutos": 60,
   "tipo": "aula",
   "aula": {
@@ -132,12 +133,13 @@ Content-Type: application/json
 }
 
 
+
 ### INLCUSAO DE ITEM 3 EM MODULO 1
-POST http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos/e49d7b90-8b1b-410e-89e0-a9899607ef64/itens HTTP/1.1
 Content-Type: application/json
 
 {
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
+  "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
   "nome": "Cómo funciona la Blockchain",
   "descricao": "Aula sobre funcionamento da blockchain",
   "estimativa_tempo_minutos": 60,
@@ -151,11 +153,11 @@ Content-Type: application/json
 
 
 ### INLCUSAO DE ITEM 4 EM MODULO 1
-POST http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
+POST https://curso-service-app-9213072c1209.herokuapp.com/modulos/e49d7b90-8b1b-410e-89e0-a9899607ef64/itens HTTP/1.1
 Content-Type: application/json
 
 {
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
+  "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
   "nome": "Smart Contract Validation",
   "descricao": "Let's build a simple smart contract and submit it to validation!",
   "estimativa_tempo_minutos": 60,
@@ -167,27 +169,13 @@ Content-Type: application/json
   }
 }
 
-### INLCUSAO DE ITEM 5 EM MODULO 1 - VIDEO
-POST http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
-Content-Type: application/json
-
-{
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
-  "nome": "Video Antecedentes de Blockchain",
-  "descricao": "Video sobre antecedentes da blockchain",
-  "estimativa_tempo_minutos": 60,
-  "tipo": "video",
-  "video": {
-    "video_url": "https://www.youtube.com/shorts/PI6H8wKUNyw"
-  }
-}
 
 ### EDITANDO ITEM 4 EM MODULO 1
-PUT http://localhost:8083/itensmodulo/8bd85c58-0421-4f07-b57b-12e4a9536c59 HTTP/1.1
+PUT https://curso-service-app-9213072c1209.herokuapp.com/itensmodulo/ccada7da-a85c-4a72-9631-398b69e34317 HTTP/1.1
 Content-Type: application/json
 
 {
-  "modulo_id": "e37e2c1e-c218-47fb-8764-e9acc2781c48",
+  "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
   "nome": "Smart Contract Validation",
   "descricao": "Let's build a simple smart contract and submit it to validation! Updated version.",
   "estimativa_tempo_minutos": 60,
@@ -197,44 +185,3 @@ Content-Type: application/json
     "endereco_contrato": "0xd69AF1161ff569a024255037495380f4f2586662"
   }
 }
-
-
-### PESQUISA DE CURSOS
-GET http://localhost:8083/cursos HTTP/1.1
-Content-Type: application/json
-
-### PESQUISA DE MODULOS do CURSO
-GET http://localhost:8083/cursos/a1682d7a-9d1a-4012-b723-060bff525487/modulos HTTP/1.1
-Content-Type: application/json
-
-
-### PESQUISA ITENS DO MODULOS
-GET http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
-Content-Type: application/json
-
-### DELETA ITEM DO MODULO
-DELETE http://localhost:8083/itensmodulo/dfef6575-3f1d-4cd9-904e-4fbf222ff940 HTTP/1.1
-Content-Type: application/json
-
-### PESQUISA ITENS DO MODULOS AULAS
-GET http://localhost:8083/alunocursos/eb371bbe-0fac-47d5-82f3-b37e46ad4a68/itemmodulos HTTP/1.1
-Content-Type: application/json
-
-
-
-### LISTA MATRICULAS
-GET http://localhost:8083/alunocursos HTTP/1.1
-Content-Type: application/json
-
-### DELETA MATRICULA
-DELETE http://localhost:8083/alunocursos/488de9e8-186d-43d4-b83a-038eab95c403 HTTP/1.1
-Content-Type: application/json
-
-
-### PESQUISA ITENS DO MODULOS
-GET http://localhost:8083/modulos/e37e2c1e-c218-47fb-8764-e9acc2781c48/itens HTTP/1.1
-Content-Type: application/json
-
-### DELETA ITEM DO MODULO
-DELETE http://localhost:8083/itensmodulo/d4329a8e-1e7a-4a5c-872a-1181987cd023 HTTP/1.1
-Content-Type: application/json

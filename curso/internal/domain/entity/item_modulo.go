@@ -12,14 +12,16 @@ type TipoItem string
 const (
 	ItemAula             TipoItem = "aula"
 	ItemContractValidate TipoItem = "contract_validation"
+	ItemVideo            TipoItem = "video"
 )
 
 type RedeValidacao string
 
 const (
-	RedeSepolia  RedeValidacao = "sepolia"
-	RedeEthereum RedeValidacao = "ethereum"
-	RedeScroll   RedeValidacao = "scroll"
+	RedeSepolia       RedeValidacao = "sepolia"
+	RedeavalancheFuji RedeValidacao = "avalancheFuji"
+	RedeEthereum      RedeValidacao = "ethereum"
+	RedeScroll        RedeValidacao = "scroll"
 )
 
 type ItemModulo struct {
@@ -32,6 +34,7 @@ type ItemModulo struct {
 	Tipo               TipoItem                      `gorm:"type:varchar(30)" json:"tipo"`
 	Aula               *ItemModuloAula               `gorm:"constraint:OnDelete:CASCADE" json:"aula,omitempty"`
 	ContractValidation *ItemModuloContractValidation `gorm:"constraint:OnDelete:CASCADE" json:"contract_validation,omitempty"`
+	Video              *ItemModuloVideo              `gorm:"constraint:OnDelete:CASCADE" json:"video,omitempty"`
 	CreatedAt          time.Time                     `json:"created_at"`
 	UpdatedAt          time.Time                     `json:"updated_at"`
 }
@@ -39,6 +42,11 @@ type ItemModulo struct {
 type ItemModuloAula struct {
 	ItemModuloID uuid.UUID `gorm:"type:uuid;primaryKey" json:"item_modulo_id"`
 	Texto        string    `gorm:"type:text" json:"texto"`
+}
+
+type ItemModuloVideo struct {
+	ItemModuloID uuid.UUID `gorm:"type:uuid;primaryKey" json:"item_modulo_id"`
+	VideoUrl     string    `gorm:"type:varchar(255)" json:"video_url"`
 }
 
 type ItemModuloContractValidation struct {
