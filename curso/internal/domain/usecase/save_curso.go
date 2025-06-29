@@ -967,6 +967,11 @@ func (c *SaveCursoUseCase) ExecuteUpdateItemModulo(obj_id string, input dto.Item
 			Rede:             entity.RedeValidacao(input.ContractValidation.Rede),
 			EnderecoContrato: input.ContractValidation.EnderecoContrato,
 		}
+	case entity.ItemVideo:
+		item.Video = &entity.ItemModuloVideo{
+			ItemModuloID: item.ID,
+			VideoUrl:     input.Video.VideoUrl,
+		}
 	}
 
 	err = c.CursoRepository.UpdateItemModulo(item)
