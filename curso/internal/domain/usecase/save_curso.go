@@ -1114,8 +1114,8 @@ func (c *SaveCursoUseCase) ExecuteFindAlunoCursoItemModulos(alunoCursoID string)
 			UpdatedAt:               item.UpdatedAt,
 		}
 		if item.ItemModulo.ContractValidation != nil {
-			newItem.EnderecoContratoValidar = item.ItemModulo.ContractValidation.EnderecoContrato
-			newItem.BlockchainRedeValidacao = string(item.ItemModulo.ContractValidation.Rede)
+			newItem.ValidatorEndereco = item.ItemModulo.ContractValidation.EnderecoContrato
+			newItem.ValidatorRede = string(item.ItemModulo.ContractValidation.Rede)
 		}
 		if item.ItemModulo.Aula != nil {
 			newItem.AulaTexto = item.ItemModulo.Aula.Texto

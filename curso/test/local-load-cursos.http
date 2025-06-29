@@ -299,3 +299,9 @@ Content-Type: application/json
 ### DELETA ITEM DO MODULO
 DELETE http://localhost:8083/itensmodulo/d4329a8e-1e7a-4a5c-872a-1181987cd023 HTTP/1.1
 Content-Type: application/json
+
+
+### PESQUISA ITENS DO MODULOS AULAS
+GET http://localhost:8083/alunocursos/08d39cfa-44b1-43d1-a833-74ecb53a4a0e/itemmodulos HTTP/1.1
+Content-Type: application/json
+

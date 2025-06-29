@@ -478,7 +478,9 @@ func (r *CursoRepositoryGorm) FindItemModulosByAlunoCurso(alunoCursoID uuid.UUID
 		Preload("ItemModulo.ContractValidation").
 		Preload("ItemModulo.Video").
 		Preload("AlunoCurso").
-		Where("aluno_curso_id = ?", alunoCursoID).Find(&itens).Error
+		Where("aluno_curso_id = ?", alunoCursoID).
+		Order("item_modulos.ordem ASC").
+		Find(&itens).Error
 	return itens, err
 }
 
