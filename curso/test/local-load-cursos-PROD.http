@@ -290,3 +290,8 @@ Content-Type: application/json
       "video_url": "https://www.youtube.com/embed/bzAI4F_ks5s?si=V2irFjnOHU1XKnq4"
     }
   }
+
+### get itens do modulo 1
+GET https://curso-service-app-9213072c1209.herokuapp.com/alunocursos/8436baa1-c264-4f63-b6cd-dd0f06ad20eb/itemmodulos HTTP/1.1
+Content-Type: application/json
+

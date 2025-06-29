@@ -473,13 +473,15 @@ func (r *CursoRepositoryGorm) CreateAlunoCursoItemModulosBatch(items []*entity.A
 func (r *CursoRepositoryGorm) FindItemModulosByAlunoCurso(alunoCursoID uuid.UUID) ([]entity.AlunoCursoItemModulo, error) {
 	var itens []entity.AlunoCursoItemModulo
 	err := r.DB.
+		Table("aluno_curso_item_modulos acim").
+		Joins("JOIN item_modulos im ON acim.item_modulo_id = im.id").
 		Preload("ItemModulo").
 		Preload("ItemModulo.Aula").
 		Preload("ItemModulo.ContractValidation").
 		Preload("ItemModulo.Video").
 		Preload("AlunoCurso").
-		Where("aluno_curso_id = ?", alunoCursoID).
-		Order("item_modulos.ordem ASC").
+		Where("acim.aluno_curso_id = ?", alunoCursoID).
+		Order("im.ordem ASC").
 		Find(&itens).Error
 	return itens, err
 }
