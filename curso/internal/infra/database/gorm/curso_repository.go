@@ -340,15 +340,53 @@ func (r *CursoRepositoryGorm) FindItemModulosByModulo(moduloID uuid.UUID) ([]ent
 	return itens, nil
 }
 func (r *CursoRepositoryGorm) UpdateItemModulo(item *entity.ItemModulo) error {
+	tx := r.DB.Begin()
+	defer func() {
+		if r := recover(); r != nil {
+			tx.Rollback()
+		}
+	}()
+
 	s, err := r.FindItemModuloByID(item.ID)
 	if err != nil {
+		tx.Rollback()
 		return err
 	}
 	item.CreatedAt = s.CreatedAt
-	if err := r.DB.Save(item).Error; err != nil {
+
+	if err := tx.Save(item).Error; err != nil {
+		tx.Rollback()
 		return err
 	}
-	return nil
+
+	if item.Tipo == entity.ItemAula && item.Aula != nil {
+		if err := tx.
+			Where("item_modulo_id = ?", item.ID).
+			Save(item.Aula).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	if item.Tipo == entity.ItemContractValidate && item.ContractValidation != nil {
+		if err := tx.
+			Where("item_modulo_id = ?", item.ID).
+			Save(item.ContractValidation).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	if item.Tipo == entity.ItemVideo && item.Video != nil {
+		if err := tx.
+			Where("item_modulo_id = ?", item.ID).
+			Save(item.Video).Error; err != nil {
+			tx.Rollback()
+			return err
+		}
+	}
+
+	return tx.Commit().Error
 }
 func (r *CursoRepositoryGorm) DeleteItemModulo(id uuid.UUID) error {
 	item, err := r.FindItemModuloByID(id)

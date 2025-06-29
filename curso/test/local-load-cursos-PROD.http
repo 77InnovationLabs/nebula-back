@@ -254,18 +254,17 @@ Content-Type: application/json
 }
 
 ### ALTERANDO ITEM 5 EM MODULO 1 - VIDEO
-PUT https://curso-service-app-9213072c1209.herokuapp.com/itensmodulo/bc6ccff7-0fe2-4bb1-95ba-64dec62a45b2 HTTP/1.1
+PUT https://curso-service-app-9213072c1209.herokuapp.com/itensmodulo/6b409d77-f831-4df5-a90e-b06560bd973d HTTP/1.1
 Content-Type: application/json
 
-  {
-    "id": "bc6ccff7-0fe2-4bb1-95ba-64dec62a45b2",
+{
     "modulo_id": "e49d7b90-8b1b-410e-89e0-a9899607ef64",
-    "nome": "Video on Blockchain Background",
-    "descricao": "A short video explaining the background of blockchain technology.",
+    "nome": "Video on Solidity Fundamentals",
+    "descricao": "A short video explaining the fundamentals of Solidity programming language.",
     "estimativa_tempo_minutos": 60,
     "tipo": "video",
     "video": {
-      "video_url": "vamooo"
-    },
-    "ordem": 1,
-  }
+      "video_url": "vamoooo"
+    }
+}
+
